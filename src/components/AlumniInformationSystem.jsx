@@ -8,7 +8,7 @@ import {
   UserCircle2, Briefcase, FileText, LogOut, BookOpen, GraduationCap,
   Plus, Trash2, Globe2, Languages, Award, X, Building2, Save, RefreshCw,
   Phone, Mail, MapPin, User, Calendar, BadgeCheck, ArrowLeft,
-  UploadCloud, ChevronRight, Star, Link, Compass, CreditCard, CheckCircle,
+  UploadCloud, ChevronRight, ChevronLeft, Star, Link, Compass, CreditCard, CheckCircle,
   Clock, AlertCircle, Download, ChevronDown, Users, Wand2, Sparkles, Eye, FileCheck
 } from 'lucide-react';
 
