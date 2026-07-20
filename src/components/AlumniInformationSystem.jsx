@@ -63,6 +63,18 @@ export default function AlumniInformationSystem({ setView, currentUser, userRole
     studentId: '200201090',
     agreed: false
   });
+
+  // Survey state
+  const [surveyAnswers, setSurveyAnswers] = useState({});
+  const [surveyCompleted, setSurveyCompleted] = useState(false);
+
+  const filteredTabs = useMemo(() => {
+    const list = [...TABS];
+    if (userRole === 'alumni') {
+      list.push({ id: 'anket', label: '📝 Memnuniyet & Anket' });
+    }
+    return list;
+  }, [userRole]);
   
   // Local profile state
   const [profileData, setProfileData] = useState({
@@ -212,7 +224,7 @@ export default function AlumniInformationSystem({ setView, currentUser, userRole
           {/* Navigation Links */}
           <div className="bg-white rounded-3xl border border-slate-200/80 p-4 shadow-sm">
             <nav className="flex flex-col gap-1">
-              {TABS.map(tab => (
+              {filteredTabs.map(tab => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
@@ -901,6 +913,82 @@ export default function AlumniInformationSystem({ setView, currentUser, userRole
                       </div>
                     </div>
                   </div>
+                </div>
+              )}
+
+              {activeTab === 'anket' && userRole === 'alumni' && (
+                <div className="space-y-6">
+                  <div className="border-b border-slate-100 pb-4">
+                    <h3 className="text-lg font-black text-slate-900">Mezun Memnuniyet & Anket Merkezi</h3>
+                    <p className="text-xs text-slate-500 font-bold mt-1">
+                      Geri bildirimleriniz üniversitemizin kalitesini artırmasında büyük rol oynuyor. Aktif anketlere katılarak düşüncelerinizi bizimle paylaşın.
+                    </p>
+                  </div>
+
+                  {!surveyCompleted ? (
+                    <div className="space-y-4">
+                      <div className="bg-slate-50 border border-slate-200 p-5 rounded-2xl">
+                        <h4 className="font-black text-xs text-indigo-600 uppercase tracking-wider mb-2">Aktif Anket: 2026 İstihdam ve Memnuniyet Anketi</h4>
+                        <p className="text-xs text-slate-500 font-bold mb-4">Mezunlarımızın iş bulma süreleri ve aldıkları eğitimin sektörel geçerliliği ölçülmektedir.</p>
+                        
+                        <div className="space-y-4 pt-2">
+                          <div className="flex flex-col gap-2">
+                            <label className="text-xs font-black text-slate-700">1. Üniversitemizde aldığınız eğitimin kariyerinize katkısından ne kadar memnunsunuz?</label>
+                            <div className="flex gap-2">
+                              {[1, 2, 3, 4, 5].map(star => (
+                                <button 
+                                  key={star} 
+                                  type="button"
+                                  onClick={() => setSurveyAnswers({...surveyAnswers, q1: star})}
+                                  className={`w-10 h-10 rounded-xl font-black text-xs border transition ${surveyAnswers.q1 === star ? 'bg-indigo-600 border-indigo-600 text-white' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'}`}
+                                >
+                                  {star} ★
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
+                          <div className="flex flex-col gap-2 pt-2">
+                            <label className="text-xs font-black text-slate-700">2. Kampüs içi teknolojik altyapı ve kütüphane olanakları yeterli miydi?</label>
+                            <div className="flex gap-2">
+                              {["Evet", "Kısmen", "Hayır"].map(opt => (
+                                <button 
+                                  key={opt}
+                                  type="button"
+                                  onClick={() => setSurveyAnswers({...surveyAnswers, q2: opt})}
+                                  className={`px-4 py-2 rounded-xl font-bold text-xs border transition ${surveyAnswers.q2 === opt ? 'bg-indigo-600 border-indigo-600 text-white' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'}`}
+                                >
+                                  {opt}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <button 
+                        onClick={() => {
+                          if (!surveyAnswers.q1 || !surveyAnswers.q2) {
+                            window.toast && window.toast.error("Lütfen tüm soruları yanıtlayın.");
+                            return;
+                          }
+                          setSurveyCompleted(true);
+                          window.toast && window.toast.success("📝 Anket geri bildiriminiz başarıyla kaydedildi. Katkınız için teşekkür ederiz!");
+                        }}
+                        className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-black rounded-xl text-xs uppercase tracking-widest transition"
+                      >
+                        Yanıtları Gönder
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="py-12 text-center bg-slate-50 border border-slate-200 rounded-3xl p-6">
+                      <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4 border border-emerald-100"><CheckCircle size={28}/></div>
+                      <h4 className="font-black text-slate-800 mb-2">Katılımınız İçin Teşekkürler</h4>
+                      <p className="text-slate-500 text-xs font-bold max-w-sm mx-auto leading-relaxed">
+                        Anket yanıtlarınız kalite geliştirme koordinatörlüğüne iletilmiştir.
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
             </motion.div>
