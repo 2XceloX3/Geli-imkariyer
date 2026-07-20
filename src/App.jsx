@@ -59,6 +59,14 @@ const CompanyATSBoard = lazy(() => import('./components/CompanyATSBoard'));
 const IdariPortal = lazy(() => import('./components/IdariPortal'));
 const AuditLogsPanel = lazy(() => import('./components/AuditLogsPanel'));
 
+// Extra active view pages
+const DigitalPortfolio = lazy(() => import('./components/DigitalPortfolio'));
+const MetaverseLibrary = lazy(() => import('./components/MetaverseLibrary'));
+const HackathonMarket = lazy(() => import('./components/HackathonMarket'));
+const AlumniDAO = lazy(() => import('./components/AlumniDAO'));
+const CampusMap = lazy(() => import('./components/CampusMap'));
+const AnkaChat = lazy(() => import('./components/AnkaChat'));
+
 import { ToastContainer, toast } from './components/shared/Toast';
 import NotificationEngine from './components/NotificationEngine';
 
@@ -80,7 +88,7 @@ class ErrorBoundary extends React.Component {
 
 const RewardStore = lazy(() => import('./components/RewardStore'));
 
-const validViews = ['reward_store', 'student_analytics', 'landing', 'leaderboard', 'live_rooms', 'mentor_match', 'virtual_fair', 'alumni_card', 'career_test', 'career_roadmap', 'startup_incubator', 'login', 'register', 'forgot_password', 'create_job', 'club_admin', 'club_portal', 'student', 'alumni', 'academic', 'company', 'admin', 'organization', 'jobs', 'haberler', 'duyurular', 'etkinlikler', 'sem', 'staj', 'profile_update', 'mbs', 'user_profile', 'groups', 'group_profile', 'notifications', 'calendar', 'applications', 'cvbuilder', 'messaging', 'interview_sim', 'birlik_agi', 'idari_portal', 'audit_logs', 'wallet', 'mentor_booking', 'smart_certs', 'company_ats'];
+const validViews = ['reward_store', 'student_analytics', 'landing', 'leaderboard', 'live_rooms', 'mentor_match', 'virtual_fair', 'alumni_card', 'career_test', 'career_roadmap', 'startup_incubator', 'login', 'register', 'forgot_password', 'create_job', 'club_admin', 'club_portal', 'student', 'alumni', 'academic', 'company', 'admin', 'organization', 'jobs', 'haberler', 'duyurular', 'etkinlikler', 'sem', 'staj', 'profile_update', 'mbs', 'user_profile', 'groups', 'group_profile', 'notifications', 'calendar', 'applications', 'cvbuilder', 'messaging', 'interview_sim', 'birlik_agi', 'idari_portal', 'audit_logs', 'wallet', 'mentor_booking', 'smart_certs', 'company_ats', 'digital_portfolio', 'metaverse_library', 'hackathon_market', 'alumni_dao', 'campus_map', 'anka_chat'];
 
 function App() {
   const viewState = useAppStore(state => state.viewState);
@@ -338,6 +346,14 @@ function App() {
         {/* New Hub Views */}
         {view === 'idari_portal' && <IdariPortal setView={setView} previousView={previousView} />}
         {view === 'audit_logs' && <AuditLogsPanel setView={setView} previousView={previousView} />}
+        
+        {/* Extra Active View Pages */}
+        {view === 'digital_portfolio' && <DigitalPortfolio currentUser={currentUser} userRole={userRole} setView={setView} setSelectedUserId={setSelectedUserId} />}
+        {view === 'metaverse_library' && <MetaverseLibrary currentUser={currentUser} userRole={userRole} setView={setView} setSelectedUserId={setSelectedUserId} />}
+        {view === 'hackathon_market' && <HackathonMarket currentUser={currentUser} userRole={userRole} setView={setView} setSelectedUserId={setSelectedUserId} />}
+        {view === 'alumni_dao' && <AlumniDAO currentUser={currentUser} userRole={userRole} setView={setView} setSelectedUserId={setSelectedUserId} />}
+        {view === 'campus_map' && <CampusMap currentUser={currentUser} userRole={userRole} setView={setView} setSelectedUserId={setSelectedUserId} />}
+        {view === 'anka_chat' && <AnkaChat currentUser={currentUser} userRole={userRole} setView={setView} setSelectedUserId={setSelectedUserId} />}
         
         {/* Gen Z UX Features */}
         <PWAInstallPrompt />
