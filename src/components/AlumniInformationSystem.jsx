@@ -778,7 +778,10 @@ export default function AlumniInformationSystem({ setView, currentUser, userRole
                           transition={{ duration: 0.6 }}
                         >
                           {/* Front Side */}
-                          <div className="absolute inset-0 w-full h-full rounded-2xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 border border-slate-800 p-6 flex flex-col justify-between text-white shadow-2xl backface-hidden">
+                          <div 
+                            className="absolute inset-0 w-full h-full rounded-2xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 border border-slate-800 p-6 flex flex-col justify-between text-white shadow-2xl"
+                            style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
+                          >
                             <div className="flex justify-between items-start">
                               <div>
                                 <span className="block text-[8px] font-black text-indigo-400 uppercase tracking-widest">İstanbul Gelişim Üniversitesi</span>
@@ -806,8 +809,8 @@ export default function AlumniInformationSystem({ setView, currentUser, userRole
 
                           {/* Back Side */}
                           <div 
-                            className="absolute inset-0 w-full h-full rounded-2xl bg-gradient-to-br from-indigo-950 via-slate-900 to-indigo-950 border border-slate-800 p-6 flex flex-col justify-between text-white shadow-2xl backface-hidden"
-                            style={{ transform: 'rotateY(180deg)' }}
+                            className="absolute inset-0 w-full h-full rounded-2xl bg-gradient-to-br from-indigo-950 via-slate-900 to-indigo-950 border border-slate-800 p-6 flex flex-col justify-between text-white shadow-2xl"
+                            style={{ transform: 'rotateY(180deg)', backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
                           >
                             <div className="flex justify-between items-start">
                               <div>
