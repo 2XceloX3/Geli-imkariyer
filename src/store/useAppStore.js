@@ -23,7 +23,11 @@ const useAppStore = create(
       const setter = (key) => (val) => set((state) => ({ [key]: typeof val === 'function' ? val(state[key]) : val }));
       
       return {
-        messages: [],
+        messages: [
+          { id: 'msg_1', senderId: 'STU-001', receiverId: 'ALU-001', text: "Selam Caner! Portfolyonuzdaki Web3 projesini çok beğendim.", timestamp: new Date(Date.now() - 3600000 * 24).toISOString(), read: true },
+          { id: 'msg_2', senderId: 'ALU-001', receiverId: 'STU-001', text: "Çok teşekkürler Alperen! İGÜ kuluçka merkezinde geliştirmiştik.", timestamp: new Date(Date.now() - 3600000 * 23).toISOString(), read: true },
+          { id: 'msg_3', senderId: 'STU-001', receiverId: 'CMP-001', text: "Yazılım mühendisliği staj başvurum hakkında bilgi alabilir miyim?", timestamp: new Date(Date.now() - 3600000 * 5).toISOString(), read: false }
+        ],
         setMessages: setter('messages'),
         
         notifications: [],
