@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import useAppStore from '../store/useAppStore';
 import Logo from './Logo';
 import ProfileUpdate from './ProfileUpdate';
+import TopProfileMenu from './TopProfileMenu';
 import { exportPDF } from '../lib/pdfExporter';
 import {
   UserCircle2, Briefcase, FileText, LogOut, BookOpen, GraduationCap,
