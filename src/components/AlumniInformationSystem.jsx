@@ -28,11 +28,41 @@ const TABS = [
   { id: 'kulup_basvuru',   label: '👥 Kulüp Başvurusu' },
 ];
 
+const CHECKUP_QUESTIONS = [
+  { id: 1, text: "Yazılım geliştirme süreçlerinde hangi alanda çalışmayı tercih edersiniz?", options: ["Frontend Geliştirme", "Backend Servisleri", "Yapay Zeka & Veri Bilimi", "Sistem & DevOps"] },
+  { id: 2, text: "Bir problemle karşılaştığınızda ilk olarak ne yaparsınız?", options: ["Dokümantasyon & StackOverflow okurum", "Kodu satır satır debug ederim", "AI asistanlardan yardım alırım", "Takım arkadaşlarıma danışırım"] },
+  { id: 3, text: "Proje yönetiminde hangi metodolojiyi benimsersiniz?", options: ["Agile/Scrum", "Waterfall", "Kanban", "Kaotik/Serbest Stil"] },
+  { id: 4, text: "Veritabanı teknolojileri konusundaki tecrübeniz nedir?", options: ["İleri düzey SQL & NoSQL", "Temel SQL sorguları", "ORM araçları kullanırım", "Henüz tecrübem yok"] },
+  { id: 5, text: "İngilizce teknik doküman okuma ve yazma düzeyiniz nedir?", options: ["Çok rahat okur yazarım", "Sözlük desteğiyle okurum", "Sadece çeviri araçlarıyla", "Başlangıç seviyesinde"] },
+  { id: 6, text: "Frontend geliştirme araçlarından (React, Vue vb.) hangisine hakimsiniz?", options: ["React.js", "Vue.js / Angular", "Vanilla JS / HTML / CSS", "Mobil (Flutter/React Native)"] },
+  { id: 7, text: "Backend servisleri tasarlarken hangi dili tercih edersiniz?", options: ["Node.js / JavaScript", "Python / Django", "Go / Java / C#", "PHP / Ruby"] },
+  { id: 8, text: "Yapay zeka (AI) ve makine öğrenimi modellerine ne kadar ilgilisiniz?", options: ["Aktif projeler geliştirdim", "Temel kütüphaneleri kullandım", "Sadece teorik bilgim var", "İlgim yok"] },
+  { id: 9, text: "Bulut bilişim platformlarını (AWS, GCP, Azure) kullanma sıklığınız nedir?", options: ["Her projemde kullanırım", "Sadece basit sunucu dağıtımlarında", "Hiç kullanmadım", "Bulut servislerini araştırıyorum"] },
+  { id: 10, text: "Takım çalışmasında kendinizi nasıl tanımlarsınız?", options: ["Lider ruhlu ve yönlendirici", "Verilen görevi kusursuz yapan", "Fikir üreten ve tartışan", "Bireysel çalışmayı tercih eden"] },
+  { id: 11, text: "Kod kalitesi ve temiz kod (Clean Code) standartlarına ne kadar önem verirsiniz?", options: ["Her satırı özenle yazarım", "Çalışması yeterlidir", "Linter kurallarına uyarım", "Proje bitiminde optimize ederim"] },
+  { id: 12, text: "Yeni bir teknolojiyi öğrenirken en çok hangi yöntemi kullanırsınız?", options: ["Uygulamalı küçük projeler yaparak", "Video eğitim setleri izleyerek", "Resmi dokümantasyon okuyarak", "Topluluk formlarını inceleyerek"] }
+];
+
 export default function AlumniInformationSystem({ setView, currentUser, userRole, setSelectedUserId }) {
   const [activeTab, setActiveTab] = useState('ozluk');
   const [cvTemplate, setCvTemplate] = useState('modern'); // 'modern' | 'academic' | 'creative'
   const [aiEnhancing, setAiEnhancing] = useState(false);
   const [cardFlipped, setCardFlipped] = useState(false);
+  
+  // Kariyer Checkup State (12 questions)
+  const [checkupAnswers, setCheckupAnswers] = useState({});
+  const [checkupStep, setCheckupStep] = useState(0);
+  const [checkupCompleted, setCheckupCompleted] = useState(false);
+
+  // Mezun Kart State
+  const [cardAppStatus, setCardAppStatus] = useState('form'); // 'form' | 'loading' | 'minted'
+  const [cardForm, setCardForm] = useState({
+    name: currentUser?.name || '',
+    dept: 'Yazılım Mühendisliği',
+    gradYear: '2024',
+    studentId: '200201090',
+    agreed: false
+  });
   
   // Local profile state
   const [profileData, setProfileData] = useState({
@@ -101,6 +131,31 @@ export default function AlumniInformationSystem({ setView, currentUser, userRole
     }, 1500);
   };
 
+  const handleCheckupAnswer = (opt) => {
+    const qId = CHECKUP_QUESTIONS[checkupStep].id;
+    setCheckupAnswers({ ...checkupAnswers, [qId]: opt });
+    
+    if (checkupStep < CHECKUP_QUESTIONS.length - 1) {
+      setCheckupStep(checkupStep + 1);
+    } else {
+      setCheckupCompleted(true);
+      window.toast && window.toast.success("🎉 Tebrikler! 12 soruluk kariyer check-up testi tamamlandı.");
+    }
+  };
+
+  const handleCardApplication = (e) => {
+    e.preventDefault();
+    if (!cardForm.name || !cardForm.studentId || !cardForm.agreed) {
+      window.toast && window.toast.error("Lütfen tüm alanları doldurun ve onay kutusunu işaretleyin.");
+      return;
+    }
+    setCardAppStatus('loading');
+    setTimeout(() => {
+      setCardAppStatus('minted');
+      window.toast && window.toast.success("💳 Mezun Kartınız başarıyla üretildi ve dijital cüzdana aktarıldı!");
+    }, 2000);
+  };
+
   return (
     <div className="min-h-screen bg-[#F8FAFC] font-sans text-slate-800 pb-20 selection:bg-indigo-500/20">
       
@@ -154,7 +209,7 @@ export default function AlumniInformationSystem({ setView, currentUser, userRole
             </div>
           </div>
 
-          {/* Navigation Links (DELETED leftmost icons) */}
+          {/* Navigation Links */}
           <div className="bg-white rounded-3xl border border-slate-200/80 p-4 shadow-sm">
             <nav className="flex flex-col gap-1">
               {TABS.map(tab => (
@@ -547,41 +602,86 @@ export default function AlumniInformationSystem({ setView, currentUser, userRole
               {activeTab === 'kariyer_checkup' && (
                 <div className="space-y-6">
                   <div className="border-b border-slate-100 pb-4">
-                    <h3 className="text-lg font-black text-slate-900">Kariyer Check-up Analizi</h3>
+                    <h3 className="text-lg font-black text-slate-900">Kariyer Check-up Analizi (12 Soru)</h3>
                   </div>
 
-                  <div className="bg-indigo-50 border border-indigo-100 rounded-3xl p-6 flex flex-col md:flex-row items-center gap-6 shadow-sm">
-                    <div className="w-20 h-20 rounded-2xl bg-white shadow-md flex items-center justify-center shrink-0 text-indigo-600">
-                      <Compass size={36} />
-                    </div>
-                    <div>
-                      <h4 className="font-black text-indigo-950 text-sm md:text-base mb-1">Mevcut Kariyer Sağlığı Endeksi: %92</h4>
-                      <p className="text-xs text-indigo-800 font-semibold leading-relaxed">
-                        Yeteneklerin, projelerin ve mezun başarı endeksin analiz edilerek pazar değerin hesaplandı. Harika bir durumdasın!
-                      </p>
-                    </div>
-                  </div>
+                  {!checkupCompleted ? (
+                    <div className="p-6 bg-slate-50 rounded-3xl border border-slate-100 shadow-sm max-w-xl mx-auto">
+                      <div className="flex justify-between items-center mb-6">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-indigo-600">Soru {checkupStep + 1} / {CHECKUP_QUESTIONS.length}</span>
+                        <div className="w-24 bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                          <div 
+                            className="bg-indigo-600 h-full transition-all duration-300" 
+                            style={{ width: `${((checkupStep + 1) / CHECKUP_QUESTIONS.length) * 100}%` }}
+                          />
+                        </div>
+                      </div>
 
-                  <div className="space-y-4">
-                    <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-xs font-black text-slate-800">1. Sektör Trendlerine Uyum</span>
-                        <span className="text-xs font-black text-indigo-600">%95</span>
-                      </div>
-                      <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
-                        <div className="bg-indigo-600 h-full w-[95%]"></div>
-                      </div>
-                    </div>
-                    <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-xs font-black text-slate-800">2. Proje Pratikliği & Kod Kalitesi</span>
-                        <span className="text-xs font-black text-emerald-600">%88</span>
-                      </div>
-                      <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
-                        <div className="bg-emerald-500 h-full w-[88%]"></div>
+                      <h4 className="font-black text-slate-800 text-sm sm:text-base leading-relaxed mb-6">
+                        {CHECKUP_QUESTIONS[checkupStep].text}
+                      </h4>
+
+                      <div className="space-y-3">
+                        {CHECKUP_QUESTIONS[checkupStep].options.map((opt, i) => (
+                          <button
+                            key={i}
+                            onClick={() => handleCheckupAnswer(opt)}
+                            className="w-full text-left p-4 rounded-2xl bg-white border border-slate-200/80 hover:border-indigo-500 hover:bg-indigo-50/20 text-xs sm:text-sm font-bold text-slate-700 transition"
+                          >
+                            {opt}
+                          </button>
+                        ))}
                       </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div className="space-y-6">
+                      <div className="bg-indigo-50 border border-indigo-100 rounded-3xl p-6 flex flex-col md:flex-row items-center gap-6 shadow-sm">
+                        <div className="w-20 h-20 rounded-2xl bg-white shadow-md flex items-center justify-center shrink-0 text-indigo-600">
+                          <Compass size={36} />
+                        </div>
+                        <div>
+                          <h4 className="font-black text-indigo-950 text-sm md:text-base mb-1">Mevcut Kariyer Sağlığı Endeksi: %92</h4>
+                          <p className="text-xs text-indigo-800 font-semibold leading-relaxed">
+                            Yeteneklerin, projelerin ve mezun başarı endeksin analiz edilerek pazar değerin hesaplandı. Harika bir durumdasın!
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                          <div className="flex justify-between items-center mb-2">
+                            <span className="text-xs font-black text-slate-800">1. Sektör Trendlerine Uyum</span>
+                            <span className="text-xs font-black text-indigo-600">%95</span>
+                          </div>
+                          <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                            <div className="bg-indigo-600 h-full w-[95%]"></div>
+                          </div>
+                        </div>
+                        <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                          <div className="flex justify-between items-center mb-2">
+                            <span className="text-xs font-black text-slate-800">2. Proje Pratikliği & Kod Kalitesi</span>
+                            <span className="text-xs font-black text-emerald-600">%88</span>
+                          </div>
+                          <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                            <div className="bg-emerald-500 h-full w-[88%]"></div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex justify-center">
+                        <button
+                          onClick={() => {
+                            setCheckupStep(0);
+                            setCheckupCompleted(false);
+                            setCheckupAnswers({});
+                          }}
+                          className="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-black uppercase tracking-widest transition"
+                        >
+                          Analizi Yeniden Başlat
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -592,71 +692,148 @@ export default function AlumniInformationSystem({ setView, currentUser, userRole
                     <h3 className="text-lg font-black text-slate-900">Dijital İGÜ Mezun Kart</h3>
                   </div>
 
-                  <p className="text-xs font-bold text-slate-500 text-center max-w-sm leading-relaxed">
-                    Kartın üzerine tıklayarak çevirebilir, arka yüzündeki akıllı QR kodunu kampüs girişlerinde okutabilirsin.
-                  </p>
+                  {cardAppStatus === 'form' && (
+                    <form onSubmit={handleCardApplication} className="w-full max-w-md bg-slate-50 border border-slate-200 p-6 rounded-3xl space-y-4">
+                      <h4 className="font-black text-sm text-slate-800 mb-2">Akıllı Mezun Kart Başvuru Formu</h4>
+                      
+                      <div className="flex flex-col gap-2">
+                        <label className="text-xs font-black text-slate-500 uppercase">Ad Soyad</label>
+                        <input 
+                          type="text" 
+                          value={cardForm.name} 
+                          onChange={e => setCardForm({...cardForm, name: e.target.value})}
+                          className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-medium focus:outline-none focus:border-indigo-400"
+                        />
+                      </div>
 
-                  {/* Flippable card container */}
-                  <div 
-                    onClick={() => setCardFlipped(!cardFlipped)}
-                    className="w-full max-w-[380px] h-[220px] cursor-pointer"
-                    style={{ perspective: '1000px' }}
-                  >
-                    <motion.div 
-                      className="w-full h-full relative"
-                      style={{ transformStyle: 'preserve-3d' }}
-                      animate={{ rotateY: cardFlipped ? 180 : 0 }}
-                      transition={{ duration: 0.6 }}
-                    >
-                      {/* Front Side */}
-                      <div className="absolute inset-0 w-full h-full rounded-2xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 border border-slate-800 p-6 flex flex-col justify-between text-white shadow-2xl backface-hidden">
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <span className="block text-[8px] font-black text-indigo-400 uppercase tracking-widest">İstanbul Gelişim Üniversitesi</span>
-                            <span className="text-sm font-black tracking-tight">MEZUN KART</span>
-                          </div>
-                          <GraduationCap size={28} className="text-indigo-400" />
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="flex flex-col gap-2">
+                          <label className="text-xs font-black text-slate-500 uppercase">Bölüm</label>
+                          <input 
+                            type="text" 
+                            value={cardForm.dept} 
+                            onChange={e => setCardForm({...cardForm, dept: e.target.value})}
+                            className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-medium focus:outline-none focus:border-indigo-400"
+                          />
                         </div>
-
-                        <div>
-                          <span className="block text-[8px] font-bold text-slate-400 uppercase tracking-wider">İsim Soyisim</span>
-                          <span className="text-base font-black tracking-wide uppercase">{currentUser?.name || 'Ad Soyad'}</span>
-                        </div>
-
-                        <div className="flex justify-between items-end">
-                          <div>
-                            <span className="block text-[8px] font-bold text-slate-400 uppercase tracking-wider">Bölüm</span>
-                            <span className="text-xs font-bold">{profileData.education[0]?.major || 'Yazılım Müh.'}</span>
-                          </div>
-                          <div className="text-right">
-                            <span className="block text-[8px] font-bold text-slate-400 uppercase tracking-wider">Mezuniyet</span>
-                            <span className="text-xs font-bold">{profileData.education[0]?.endYear || '2024'}</span>
-                          </div>
+                        <div className="flex flex-col gap-2">
+                          <label className="text-xs font-black text-slate-500 uppercase">Öğrenci No</label>
+                          <input 
+                            type="text" 
+                            value={cardForm.studentId} 
+                            onChange={e => setCardForm({...cardForm, studentId: e.target.value})}
+                            className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-medium focus:outline-none focus:border-indigo-400"
+                          />
                         </div>
                       </div>
 
-                      {/* Back Side */}
-                      <div 
-                        className="absolute inset-0 w-full h-full rounded-2xl bg-gradient-to-br from-indigo-950 via-slate-900 to-indigo-950 border border-slate-800 p-6 flex flex-col justify-between text-white shadow-2xl backface-hidden"
-                        style={{ transform: 'rotateY(180deg)' }}
+                      <div className="flex items-start gap-2.5 pt-2">
+                        <input 
+                          type="checkbox" 
+                          id="agree"
+                          checked={cardForm.agreed} 
+                          onChange={e => setCardForm({...cardForm, agreed: e.target.checked})}
+                          className="mt-1"
+                        />
+                        <label htmlFor="agree" className="text-[10px] text-slate-500 leading-relaxed font-bold">
+                          Mezun bilgilerimin akıllı sözleşme standartlarında İGÜ Mezuniyet Ağına yazılmasını onaylıyorum.
+                        </label>
+                      </div>
+
+                      <button
+                        type="submit"
+                        className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-black rounded-xl text-xs uppercase tracking-widest transition shadow-lg mt-4"
                       >
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <span className="block text-[8px] font-black text-indigo-400 uppercase tracking-widest font-sans">NFC & QR ID</span>
-                            <span className="text-[10px] font-mono text-slate-400">IGU-ALUM-98425</span>
-                          </div>
-                          <div className="w-12 h-12 bg-white rounded-lg p-1">
-                            {/* QR Placeholder */}
-                            <div className="w-full h-full bg-slate-950 rounded flex items-center justify-center"><span className="text-[6px] font-black text-indigo-400">QR</span></div>
-                          </div>
-                        </div>
+                        Akıllı Kartı Oluştur & Dağıt
+                      </button>
+                    </form>
+                  )}
 
-                        <div className="text-center text-[10px] text-slate-400 font-bold border-t border-slate-800 pt-4 leading-relaxed">
-                          Bu kart İGÜ Mezuniyet Ağı akıllı kimlik doğrulama protokolüyle şifrelenmiştir.
-                        </div>
+                  {cardAppStatus === 'loading' && (
+                    <div className="py-12 flex flex-col items-center justify-center text-center">
+                      <div className="w-12 h-12 border-4 border-slate-200 border-t-indigo-600 rounded-full animate-spin mb-4"></div>
+                      <h4 className="font-black text-slate-800 mb-1">Kartınız Dağıtılıyor...</h4>
+                      <p className="text-slate-400 text-xs max-w-xs leading-relaxed font-semibold">
+                        Kimlik verileriniz kriptografik olarak imzalanıp İGÜ Mezun DAG ağına yazılıyor.
+                      </p>
+                    </div>
+                  )}
+
+                  {cardAppStatus === 'minted' && (
+                    <div className="flex flex-col items-center gap-6">
+                      <p className="text-xs font-bold text-slate-500 text-center max-w-sm leading-relaxed">
+                        Kartın üzerine tıklayarak çevirebilir, arka yüzündeki akıllı QR kodunu kampüs girişlerinde okutabilirsin.
+                      </p>
+
+                      {/* Flippable card container */}
+                      <div 
+                        onClick={() => setCardFlipped(!cardFlipped)}
+                        className="w-full max-w-[380px] h-[220px] cursor-pointer"
+                        style={{ perspective: '1000px' }}
+                      >
+                        <motion.div 
+                          className="w-full h-full relative"
+                          style={{ transformStyle: 'preserve-3d' }}
+                          animate={{ rotateY: cardFlipped ? 180 : 0 }}
+                          transition={{ duration: 0.6 }}
+                        >
+                          {/* Front Side */}
+                          <div className="absolute inset-0 w-full h-full rounded-2xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 border border-slate-800 p-6 flex flex-col justify-between text-white shadow-2xl backface-hidden">
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <span className="block text-[8px] font-black text-indigo-400 uppercase tracking-widest">İstanbul Gelişim Üniversitesi</span>
+                                <span className="text-sm font-black tracking-tight">MEZUN KART</span>
+                              </div>
+                              <GraduationCap size={28} className="text-indigo-400" />
+                            </div>
+
+                            <div>
+                              <span className="block text-[8px] font-bold text-slate-400 uppercase tracking-wider">İsim Soyisim</span>
+                              <span className="text-base font-black tracking-wide uppercase">{cardForm.name}</span>
+                            </div>
+
+                            <div className="flex justify-between items-end">
+                              <div>
+                                <span className="block text-[8px] font-bold text-slate-400 uppercase tracking-wider">Bölüm</span>
+                                <span className="text-xs font-bold">{cardForm.dept}</span>
+                              </div>
+                              <div className="text-right">
+                                <span className="block text-[8px] font-bold text-slate-400 uppercase tracking-wider">Mezuniyet</span>
+                                <span className="text-xs font-bold">{cardForm.gradYear}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Back Side */}
+                          <div 
+                            className="absolute inset-0 w-full h-full rounded-2xl bg-gradient-to-br from-indigo-950 via-slate-900 to-indigo-950 border border-slate-800 p-6 flex flex-col justify-between text-white shadow-2xl backface-hidden"
+                            style={{ transform: 'rotateY(180deg)' }}
+                          >
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <span className="block text-[8px] font-black text-indigo-400 uppercase tracking-widest font-sans">NFC & QR ID</span>
+                                <span className="text-[10px] font-mono text-slate-400">IGU-ALUM-{cardForm.studentId}</span>
+                              </div>
+                              <div className="w-12 h-12 bg-white rounded-lg p-1">
+                                <div className="w-full h-full bg-slate-950 rounded flex items-center justify-center"><span className="text-[6px] font-black text-indigo-400 font-mono">QR</span></div>
+                              </div>
+                            </div>
+
+                            <div className="text-center text-[10px] text-slate-400 font-bold border-t border-slate-800 pt-4 leading-relaxed">
+                              Bu kart İGÜ Mezuniyet Ağı akıllı kimlik doğrulama protokolüyle şifrelenmiştir.
+                            </div>
+                          </div>
+                        </motion.div>
                       </div>
-                    </motion.div>
-                  </div>
+
+                      <button
+                        onClick={() => setCardAppStatus('form')}
+                        className="text-xs font-black text-slate-500 hover:text-slate-800 transition uppercase tracking-wider"
+                      >
+                        Yeni Başvuru Yap
+                      </button>
+                    </div>
+                  )}
                 </div>
               )}
 
