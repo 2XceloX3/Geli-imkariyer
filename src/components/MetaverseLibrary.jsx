@@ -1,30 +1,44 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BookOpen, Search, Library, Sparkles, ChevronLeft, BrainCircuit, ExternalLink, GraduationCap, Clock } from 'lucide-react';
+import { 
+  BookOpen, Search, Library, Sparkles, ChevronLeft, BrainCircuit, 
+  ExternalLink, GraduationCap, Clock, X, FileText, Check, Award
+} from 'lucide-react';
 import Logo from './Logo';
 import TopProfileMenu from './TopProfileMenu';
 import { generateAIResponse } from '../lib/gemini';
+
+const MOCK_TRENDS = [
+  'Kuantum Hesaplama',
+  'Yapay Zeka ve Etik',
+  'Blokzincir Akıllı Sözleşmeler',
+  'Metaverse Eğitim Teknolojileri'
+];
 
 export default function MetaverseLibrary({ setView, currentUser, userRole, setSelectedUserId }) {
   const [query, setQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [results, setResults] = useState(null);
+  const [selectedBook, setSelectedBook] = useState(null);
+  const [learningPathStatus, setLearningPathStatus] = useState(false);
 
-  const handleSearch = async () => {
-    if (!query.trim()) return;
+  const handleSearch = async (searchQuery = query) => {
+    if (!searchQuery.trim()) return;
+    setQuery(searchQuery);
     setIsSearching(true);
+    setLearningPathStatus(false);
 
     const prompt = `
       Sen Gelişim Üniversitesi "Metaverse Kütüphanesi"nin Baş Kütüphanecisi olan bir Yapay Zeka'sın.
-      Öğrenci şu konuyu araştırmak istiyor: "${query}".
+      Öğrenci şu konuyu araştırmak istiyor: "${searchQuery}".
       Ona bu konuyla ilgili 3 adet akademik makale/kitap önerisi ve kısa bir 1 paragraflık "Konu Özeti" ver.
       Sadece aşağıdaki JSON formatında bir cevap dön, markdown veya başka metin kullanma:
       {
         "summary": "Konunun yapay zeka tarafından derlenmiş mükemmel özeti...",
         "resources": [
-          { "title": "Kaynak 1 Adı", "author": "Yazar", "type": "Makale", "year": "2023" },
-          { "title": "Kaynak 2 Adı", "author": "Yazar", "type": "Kitap", "year": "2022" },
-          { "title": "Kaynak 3 Adı", "author": "Yazar", "type": "Tez", "year": "2024" }
+          { "title": "Kaynak 1 Adı", "author": "Yazar", "type": "Makale", "year": "2023", "abstract": "Bu çalışma ilgili konuyu derinlemesine ele alır." },
+          { "title": "Kaynak 2 Adı", "author": "Yazar", "type": "Kitap", "year": "2022", "abstract": "Konunun temel teorilerini anlatan kapsamlı bir eser." },
+          { "title": "Kaynak 3 Adı", "author": "Yazar", "type": "Tez", "year": "2024", "abstract": "Konunun güncel pratik uygulamaları üzerine odaklanan tez çalışması." }
         ]
       }
     `;
@@ -39,11 +53,11 @@ export default function MetaverseLibrary({ setView, currentUser, userRole, setSe
       } catch (e) {
         // Fallback
         setResults({
-          summary: `"${query}" konusunda literatürde son yıllarda özellikle nöral ağlar ve derin öğrenme modelleri üzerine yoğunlaşılmıştır. Sistemlerin adaptif öğrenme süreçleri endüstri standartlarını yeniden belirliyor.`,
+          summary: `"${searchQuery}" konusunda literatürde son yıllarda özellikle nöral ağlar ve derin öğrenme modelleri üzerine yoğunlaşılmıştır. Sistemlerin adaptif öğrenme süreçleri endüstri standartlarını yeniden belirliyor.`,
           resources: [
-            { title: `${query}: A Comprehensive Review`, author: "Dr. A. Yılmaz", type: "Makale", year: "2024" },
-            { title: `Modern Approaches to ${query}`, author: "Global Research Institute", type: "Kitap", year: "2023" },
-            { title: `Implementation of ${query} in IoT`, author: "Gelişim Üniversitesi", type: "Tez", year: "2024" }
+            { title: `${searchQuery}: A Comprehensive Review`, author: "Dr. A. Yılmaz", type: "Makale", year: "2024", abstract: "Bu çalışmada konunun genel teorisi ve güncel metodolojileri geniş bir literatür taramasıyla sunulmaktadır." },
+            { title: `Modern Approaches to ${searchQuery}`, author: "Global Research Institute", type: "Kitap", year: "2023", abstract: "Uygulamalı örnekler ve vaka analizleriyle zenginleştirilmiş başucu kitabı." },
+            { title: `Implementation of ${searchQuery} in IoT`, author: "Gelişim Üniversitesi", type: "Tez", year: "2024", abstract: "Konunun nesnelerin interneti ekosistemindeki yeri ve prototip uygulamaları." }
           ]
         });
         setIsSearching(false);
@@ -52,75 +66,83 @@ export default function MetaverseLibrary({ setView, currentUser, userRole, setSe
   };
 
   return (
-    <div className="min-h-screen bg-[#F5EEDC] text-slate-800 flex flex-col font-serif" style={{ backgroundImage: 'radial-gradient(#d4caba 1px, transparent 1px)', backgroundSize: '20px 20px' }}>
-      <header className="h-16 bg-white/80 backdrop-blur-xl border-b border-[#e2d5c3] flex items-center justify-between px-4 lg:px-8 sticky top-0 z-50 font-sans">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-800 flex flex-col font-sans">
+      
+      {/* Header */}
+      <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-8 sticky top-0 z-50 shadow-sm">
         <div className="flex items-center gap-4">
           <button 
             onClick={() => setView(userRole === 'employer' ? 'company' : userRole === 'alumni' ? 'alumni' : userRole === 'academic' ? 'academic' : 'student')} 
-            className="p-2 rounded-full bg-[#e2d5c3]/50 text-slate-600 hover:bg-[#e2d5c3] transition"
+            className="p-2 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 transition"
           >
             <ChevronLeft size={20} />
           </button>
           <div className="flex items-center gap-2">
-            <Library className="text-[#8B5A2B]" size={24} />
-            <h1 className="font-black text-[#4A3728] tracking-tight">Metaverse Kütüphanesi</h1>
+            <Library className="text-indigo-600" size={24} />
+            <h1 className="font-black text-slate-900 tracking-tight">Metaverse Kütüphanesi</h1>
           </div>
         </div>
         <TopProfileMenu currentUser={currentUser} userRole={userRole} setView={setView} setSelectedUserId={setSelectedUserId} />
       </header>
 
-      <main className="flex-1 w-full max-w-5xl mx-auto p-4 lg:p-8 flex flex-col">
+      <main className="flex-1 w-full max-w-[1200px] mx-auto p-4 lg:p-8 flex flex-col justify-center">
         
         {!results && !isSearching && (
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex-1 flex flex-col items-center justify-center text-center max-w-3xl mx-auto py-12"
+            className="w-full max-w-3xl mx-auto py-12 flex flex-col items-center text-center"
           >
-            <div className="w-32 h-32 bg-[#fff8eb] rounded-full flex items-center justify-center shadow-[0_10px_40px_rgba(139,90,43,0.15)] mb-8 border-4 border-white relative">
-              <div className="absolute inset-0 bg-[#8B5A2B]/5 rounded-full animate-ping" />
-              <BookOpen size={64} className="text-[#8B5A2B]" />
+            <div className="w-24 h-24 bg-indigo-50 text-indigo-600 rounded-3xl flex items-center justify-center shadow-lg border border-indigo-100 mb-8 relative">
+              <BookOpen size={48} />
             </div>
             
-            <h2 className="text-3xl font-black mb-6 text-[#4A3728] tracking-tight font-sans">
-              Büyük Bilgi Ağacına Hoş Geldin
+            <h2 className="text-3xl font-black mb-4 text-slate-900 tracking-tight">
+              Dijital Bilgi Ağacı
             </h2>
-            <p className="text-[#725c48] text-xl mb-12 leading-relaxed italic">
-              "Tüm insanlığın bilgisi Anka'nın belleğinde parmaklarının ucunda."<br/>Araştırmak istediğin konuyu fısılda...
+            <p className="text-slate-500 text-base mb-8 max-w-xl leading-relaxed font-semibold">
+              Yapay Zeka kütüphanecimiz binlerce akademik yayını ve kitabı sizin için saniyeler içinde tarayıp özetler.
             </p>
 
-            <div className="w-full bg-white p-3 rounded-2xl shadow-xl flex items-center gap-4 border border-[#e2d5c3] focus-within:ring-4 focus-within:ring-[#8B5A2B]/20 transition-all">
-              <Search className="text-[#8B5A2B] ml-4" size={24} />
+            <div className="w-full bg-white p-3 rounded-3xl shadow-xl flex items-center gap-4 border border-slate-200/80 focus-within:ring-4 focus-within:ring-indigo-100 focus-within:border-indigo-400 transition-all mb-6">
+              <Search className="text-slate-400 ml-4" size={22} />
               <input 
                 type="text" 
-                className="flex-1 bg-transparent border-none outline-none text-xl text-[#4A3728] placeholder-[#b8a99a] font-sans"
-                placeholder="Örn: Kuantum Hesaplama, Roma İmparatorluğu, React Hooks..."
+                className="flex-1 bg-transparent border-none outline-none text-sm font-semibold text-slate-800 placeholder-slate-400"
+                placeholder="Örn: Kuantum Hesaplama, Blokzincir, Derin Öğrenme..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
               />
               <button 
-                onClick={handleSearch}
+                onClick={() => handleSearch()}
                 disabled={!query.trim()}
-                className="bg-[#8B5A2B] hover:bg-[#6c4621] disabled:opacity-50 text-white px-8 py-4 rounded-xl font-bold transition font-sans shadow-lg"
+                className="bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white px-6 py-3.5 rounded-2xl text-xs font-black uppercase tracking-wider transition shadow-md"
               >
-                Raflarda Ara
+                Ara
               </button>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              <span className="text-xs font-bold text-slate-400 uppercase mr-1">Önerilenler:</span>
+              {MOCK_TRENDS.map((trend, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => handleSearch(trend)}
+                  className="bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-slate-600 font-bold px-3.5 py-1.5 rounded-xl text-xs transition border border-slate-200/40"
+                >
+                  {trend}
+                </button>
+              ))}
             </div>
           </motion.div>
         )}
 
         {isSearching && (
-          <div className="flex-1 flex flex-col items-center justify-center py-20 text-center">
-            <div className="relative w-32 h-32 mb-8">
-              <div className="absolute inset-0 border-4 border-[#e2d5c3] rounded-full" />
-              <div className="absolute inset-0 border-4 border-[#8B5A2B] rounded-full border-t-transparent animate-spin" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <BrainCircuit size={40} className="text-[#8B5A2B]" />
-              </div>
-            </div>
-            <h3 className="text-2xl font-black text-[#4A3728] mb-2 font-sans">Baş Kütüphaneci Araştırıyor...</h3>
-            <p className="text-[#725c48] italic">Binlerce dijital sayfa taranıyor, akademik makaleler inceleniyor.</p>
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <div className="w-16 h-16 border-4 border-slate-200 border-t-indigo-600 rounded-full animate-spin mb-6"></div>
+            <h3 className="text-2xl font-black text-slate-900 mb-2">Yapay Zeka Taraması Yapılıyor...</h3>
+            <p className="text-slate-500 max-w-sm font-semibold">Binlerce akademik kaynak, tez ve makale taranarak sizin için özetleniyor.</p>
           </div>
         )}
 
@@ -129,89 +151,140 @@ export default function MetaverseLibrary({ setView, currentUser, userRole, setSe
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="py-8"
+              className="py-6 max-w-5xl mx-auto w-full space-y-6"
             >
-              <div className="flex items-center justify-between mb-8">
-                <div>
-                  <h2 className="text-2xl font-black text-[#4A3728] font-sans mb-2">"{query}"</h2>
-                  <p className="text-[#8B5A2B] font-bold uppercase tracking-widest text-sm flex items-center gap-2 font-sans">
-                    <Sparkles size={16}/> Anka Derlemesi
-                  </p>
-                </div>
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-2">
+                <button 
+                  onClick={() => { setResults(null); setQuery(''); }}
+                  className="text-slate-500 hover:text-slate-800 font-bold flex items-center gap-2 transition bg-white px-4 py-2.5 rounded-2xl border border-slate-200 shadow-sm text-xs"
+                >
+                  <ChevronLeft size={16} /> Yeni Araştırma
+                </button>
                 <div className="flex items-center gap-3">
                   <button 
                     onClick={(e) => {
                       e.preventDefault();
-                      window.toast && window.toast.info("Anka: Özel öğrenme rotanız oluşturuluyor...");
-                      setTimeout(() => {
-                        window.toast && window.toast.success("✅ Öğrenme Rotası başarıyla Kariyer Yol Haritanıza eklendi.");
-                      }, 2000);
+                      setLearningPathStatus(true);
+                      window.toast && window.toast.success("✅ Öğrenme Rotası başarıyla Kariyer Yol Haritanıza eklendi.");
                     }}
-                    className="px-6 py-2 bg-[#8B5A2B] text-white rounded-xl font-bold font-sans shadow-md hover:bg-[#6c4621] transition flex items-center gap-2"
+                    disabled={learningPathStatus}
+                    className={`px-5 py-3 rounded-2xl font-black text-xs uppercase tracking-widest shadow-md transition flex items-center gap-1.5 ${learningPathStatus ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-indigo-600 text-white hover:bg-indigo-700'}`}
                   >
-                    <BrainCircuit size={16} /> Öğrenme Rotası Çıkar
-                  </button>
-                  <button 
-                    onClick={() => { setResults(null); setQuery(''); }}
-                    className="px-6 py-2 bg-white border border-[#e2d5c3] text-[#4A3728] rounded-xl font-bold font-sans shadow-sm hover:bg-[#fcfaf7] transition"
-                  >
-                    Yeni Araştırma
+                    {learningPathStatus ? <Check size={14}/> : <BrainCircuit size={14} />}
+                    {learningPathStatus ? 'Rotaya Eklendi' : 'Öğrenme Rotası Çıkar'}
                   </button>
                 </div>
               </div>
 
-              <div className="bg-white rounded-xl p-8 shadow-xl border border-[#e2d5c3] mb-8 relative overflow-hidden">
-                <div className="absolute -top-10 -right-10 text-[#f5f0e6] pointer-events-none">
-                  <Library size={200} />
+              {/* Topic Summary Card */}
+              <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200/80 relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
+                  <Library size={150} />
                 </div>
-                <h3 className="text-xl font-bold text-[#8B5A2B] mb-4 font-sans uppercase tracking-wider flex items-center gap-2">
-                  <BookOpen size={20}/> Konu Özeti
+                <h3 className="text-xs font-black text-indigo-600 mb-3 uppercase tracking-widest flex items-center gap-1.5">
+                  <Sparkles size={14}/> Yapay Zeka Konu Analizi
                 </h3>
-                <p className="text-xl text-[#4A3728] leading-relaxed relative z-10">
+                <h2 className="text-2xl font-black text-slate-900 mb-4">"{query}"</h2>
+                <p className="text-slate-600 text-sm md:text-base leading-relaxed font-semibold">
                   {results.summary}
                 </p>
               </div>
 
-              <h3 className="text-2xl font-black text-[#4A3728] mb-6 font-sans flex items-center gap-2">
-                <GraduationCap className="text-[#8B5A2B]"/> Önerilen Akademik Kaynaklar
+              {/* Resources list */}
+              <h3 className="text-lg font-black text-slate-900 flex items-center gap-2 pt-4">
+                <GraduationCap className="text-indigo-600"/> Akademik Kaynak Önerileri
               </h3>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {results.resources.map((res, idx) => (
-                  <div key={idx} className="bg-white p-6 rounded-2xl shadow-md border border-[#e2d5c3] hover:-translate-y-1 hover:shadow-xl transition-all group flex flex-col">
-                    <div className="flex items-center gap-2 text-xs font-bold text-[#8B5A2B] uppercase tracking-wider mb-3 font-sans">
-                      <span className="bg-[#f5f0e6] px-2 py-1 rounded">{res.type}</span>
-                      <span className="flex items-center gap-1"><Clock size={12}/> {res.year}</span>
+                  <div key={idx} className="bg-white p-6 rounded-3xl shadow-sm border border-slate-200/80 hover:shadow-md transition-shadow flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center gap-2 text-[10px] font-black text-indigo-600 uppercase tracking-wider mb-4">
+                        <span className="bg-indigo-50 border border-indigo-100/50 px-2 py-0.5 rounded">{res.type}</span>
+                        <span className="flex items-center gap-1"><Clock size={12}/> {res.year}</span>
+                      </div>
+                      <h4 className="text-sm font-black text-slate-800 mb-2 leading-snug line-clamp-2">{res.title}</h4>
+                      <p className="text-slate-400 font-bold text-[11px] mb-6">{res.author}</p>
                     </div>
-                    <h4 className="text-lg font-bold text-[#4A3728] mb-2 leading-snug flex-1">{res.title}</h4>
-                    <p className="text-[#725c48] font-sans text-sm mb-6 border-t border-[#f5f0e6] pt-3">{res.author}</p>
                     
-                    <div className="flex gap-2 w-full mt-auto">
-                      <button 
-                        onClick={(e) => {
-                          e.preventDefault();
-                          window.toast && window.toast.info("Anka AI: Kaynak metni analiz edilip sesli podcast formatına dönüştürülüyor...");
-                          setTimeout(() => {
-                            window.toast && window.toast.success("🎵 AI Podcast Hazır: Dinlemeye başlayabilirsiniz.");
-                          }, 2500);
-                        }}
-                        className="flex-1 bg-[#fcfaf7] text-[#4A3728] border border-[#e2d5c3] py-2 rounded-lg font-bold text-sm font-sans hover:bg-[#8B5A2B] hover:text-white hover:border-[#8B5A2B] transition flex items-center justify-center gap-1"
-                        title="Sesli Özet"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
-                      </button>
-                      <button className="flex-[3] bg-[#fcfaf7] text-[#4A3728] border border-[#e2d5c3] py-2 rounded-lg font-bold text-sm font-sans hover:bg-[#8B5A2B] hover:text-white hover:border-[#8B5A2B] transition flex items-center justify-center gap-2">
-                        İncele <ExternalLink size={14}/>
-                      </button>
-                    </div>
+                    <button 
+                      onClick={() => setSelectedBook(res)}
+                      className="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl text-xs font-black uppercase tracking-wider transition"
+                    >
+                      İncele
+                    </button>
                   </div>
                 ))}
               </div>
-
             </motion.div>
           </AnimatePresence>
         )}
       </main>
+
+      {/* Book details Modal */}
+      <AnimatePresence>
+        {selectedBook && (
+          <motion.div 
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-sm flex items-center justify-center p-4"
+            onClick={() => setSelectedBook(null)}
+          >
+            <motion.div 
+              initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }}
+              onClick={e => e.stopPropagation()}
+              className="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden border border-slate-100"
+            >
+              <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                <div>
+                  <span className="text-[9px] text-indigo-600 font-black uppercase tracking-widest bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100">{selectedBook.type}</span>
+                  <h3 className="font-black text-slate-950 text-sm mt-1">Akademik Yayın Özeti</h3>
+                </div>
+                <button onClick={() => setSelectedBook(null)} className="w-8 h-8 flex items-center justify-center rounded-full bg-slate-200 hover:bg-slate-300 text-slate-600 transition">
+                  <X size={16} />
+                </button>
+              </div>
+
+              <div className="p-6 space-y-4 text-xs font-bold text-slate-500">
+                <div>
+                  <label className="text-[10px] text-slate-400 uppercase font-black tracking-wider">Yayın Adı</label>
+                  <h4 className="text-slate-800 font-black text-sm mt-1">{selectedBook.title}</h4>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-[10px] text-slate-400 uppercase font-black tracking-wider">Yazar</label>
+                    <p className="text-slate-800 mt-1">{selectedBook.author}</p>
+                  </div>
+                  <div>
+                    <label className="text-[10px] text-slate-400 uppercase font-black tracking-wider">Yayın Yılı</label>
+                    <p className="text-slate-800 mt-1">{selectedBook.year}</p>
+                  </div>
+                </div>
+
+                <div className="border-t border-slate-100 pt-4">
+                  <label className="text-[10px] text-slate-400 uppercase font-black tracking-wider">Özet (Abstract)</label>
+                  <p className="text-slate-600 mt-1.5 leading-relaxed font-semibold">{selectedBook.abstract}</p>
+                </div>
+
+                <div className="flex gap-2 pt-4">
+                  <button 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.toast && window.toast.info("Yayın PDF'i blockchain üzerinden doğrulanıyor...");
+                      setTimeout(() => {
+                        window.toast && window.toast.success("✅ Yayın başarıyla doğrulandı ve cihazınıza indirildi!");
+                      }, 2000);
+                    }}
+                    className="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-black uppercase tracking-widest text-center"
+                  >
+                    PDF Olarak İndir
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
