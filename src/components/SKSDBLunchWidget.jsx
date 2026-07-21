@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { Activity, Flame, ChevronLeft, Droplets, Dumbbell, Scale, Sparkles, AlertCircle, CheckCircle2, HeartPulse, CalendarCheck, ArrowUpRight, Award, UserCheck } from 'lucide-react';
 import TopProfileMenu from './TopProfileMenu';
 
+import useAppStore from '../store/useAppStore';
+
 export default function SKSDBLunchWidget({ setView, currentUser, userRole, setSelectedUserId }) {
+  const addBmiRecord = useAppStore(state => state.addBmiRecord);
   // BMI & Health Calculator State
   const [height, setHeight] = useState(175);
   const [weight, setWeight] = useState(70);
@@ -57,6 +60,19 @@ export default function SKSDBLunchWidget({ setView, currentUser, userRole, setSe
   const handleBookDietitian = () => {
     if (!dietitianBooked) {
       setDietitianBooked(true);
+      addBmiRecord({
+        id: `BMI-${Math.floor(100 + Math.random() * 900)}`,
+        name: currentUser?.name || 'Öğrenci',
+        role: userRole || 'Öğrenci',
+        height,
+        weight,
+        bmi,
+        bmr,
+        targetCal: dailyCalories,
+        category: bmiStatus.label,
+        dietitianRequested: true,
+        date: new Date().toISOString().replace('T', ' ').slice(0, 16)
+      });
       window.toast && window.toast.success("Mediko-Sosyal Diyetisyen randevu talebiniz alındı. Öğrenci E-postanıza onay iletildi.");
     }
   };

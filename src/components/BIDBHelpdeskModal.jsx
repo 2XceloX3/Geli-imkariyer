@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { HelpCircle, Send, ChevronLeft, CheckCircle } from 'lucide-react';
 import TopProfileMenu from './TopProfileMenu';
 
+import useAppStore from '../store/useAppStore';
+
 export default function BIDBHelpdeskModal({ setView, currentUser, userRole, setSelectedUserId }) {
+  const addHelpdeskTicket = useAppStore(state => state.addHelpdeskTicket);
   const [form, setForm] = useState({ subject: 'E-Posta / Wi-Fi Şifre Sıfırlama', details: '', email: currentUser?.email || '' });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -12,6 +15,16 @@ export default function BIDBHelpdeskModal({ setView, currentUser, userRole, setS
       window.toast && window.toast.error("Lütfen sorun detaylarını açıklayın.");
       return;
     }
+    const ticketNo = `BIDB-${new Date().getFullYear()}-${Math.floor(100 + Math.random() * 900)}`;
+    addHelpdeskTicket({
+      id: ticketNo,
+      name: currentUser?.name || 'Kullanıcı',
+      email: form.email,
+      subject: form.subject,
+      details: form.details,
+      status: 'Açık',
+      date: new Date().toISOString().replace('T', ' ').slice(0, 16)
+    });
     setIsSubmitted(true);
     window.toast && window.toast.success("Destek biletiniz BİDB ekibine iletildi.");
   };

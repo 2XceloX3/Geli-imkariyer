@@ -218,6 +218,39 @@ const useAppStore = create(
         academicApprovals: initialAcademicApprovals,
         setAcademicApprovals: setter('academicApprovals'),
 
+        // Enterprise Central Data Pools (Havuz)
+        bmiRecords: [
+          { id: 'BMI-101', name: 'Alperen Şahin', role: 'Öğrenci', height: 180, weight: 78, bmi: 24.1, bmr: 1820, targetCal: 2502, category: 'İdeal Kilo', dietitianRequested: true, date: '2026-07-21 10:15' },
+          { id: 'BMI-102', name: 'Zeynep Kaya', role: 'Öğrenci', height: 165, weight: 54, bmi: 19.8, bmr: 1350, targetCal: 1856, category: 'İdeal Kilo', dietitianRequested: false, date: '2026-07-21 09:40' }
+        ],
+        setBmiRecords: setter('bmiRecords'),
+        addBmiRecord: (rec) => set(state => ({ bmiRecords: [rec, ...(state.bmiRecords || [])] })),
+
+        helpdeskTickets: [
+          { id: 'BIDB-2026-849', name: 'Mert Demir', email: 'mert.d@gelisim.edu.tr', subject: 'E-Posta / Wi-Fi Şifre Sıfırlama', details: 'Kampüs Wi-Fi şifrem kilitlendi.', status: 'Açık', date: '2026-07-21 10:02' },
+          { id: 'BIDB-2026-850', name: 'Selin Yılmaz', email: 'selin.y@gelisim.edu.tr', subject: 'LMS Ders Erişim Sorunu', details: 'Biyomedikal 101 dersi paneli görünmüyor.', status: 'İşlemde', date: '2026-07-21 09:15' }
+        ],
+        setHelpdeskTickets: setter('helpdeskTickets'),
+        addHelpdeskTicket: (tkt) => set(state => ({ helpdeskTickets: [tkt, ...(state.helpdeskTickets || [])] })),
+
+        clubApplications: [
+          { id: 'APP-CLUB-101', name: 'Caner Öz', clubName: 'Yazılım ve Bilişim Kulübü', department: 'Bilgisayar Müh.', date: '2026-07-21 09:30', status: 'Onay Bekliyor' }
+        ],
+        setClubApplications: setter('clubApplications'),
+        addClubApplication: (app) => set(state => ({ clubApplications: [app, ...(state.clubApplications || [])] })),
+
+        labReservations: [
+          { id: 'RES-LAB-01', name: 'Dr. Ahmet Yılmaz', labName: 'Yapay Zeka & Derin Öğrenme Ar-Ge Lab', timeSlot: '14:00 - 16:00', date: '2026-07-21', status: 'Onaylandı' }
+        ],
+        setLabReservations: setter('labReservations'),
+        addLabReservation: (res) => set(state => ({ labReservations: [res, ...(state.labReservations || [])] })),
+
+        eventRegistrations: [
+          { id: 'TKT-EVT-101', name: 'Elif Şahin', eventTitle: 'Yapay Zeka ve Geleceğin Meslekleri Paneli', ticketCode: 'IGU-AI-883', date: '2026-07-21 10:20', status: 'Aktif Bilet' }
+        ],
+        setEventRegistrations: setter('eventRegistrations'),
+        addEventRegistration: (reg) => set(state => ({ eventRegistrations: [reg, ...(state.eventRegistrations || [])] })),
+
         isProfileDrawerOpen: false,
         setIsProfileDrawerOpen: setter('isProfileDrawerOpen'),
 

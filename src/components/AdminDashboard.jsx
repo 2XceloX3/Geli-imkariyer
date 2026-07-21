@@ -31,6 +31,7 @@ import CMSGroups from './admin/CMSGroups';
 import CMSClubs from './admin/CMSClubs';
 import CMSSSP from './admin/CMSSSP';
 import CMSLiveRooms from './admin/CMSLiveRooms';
+import CMSDataPoolExport from './admin/CMSDataPoolExport';
 
 
 import PanelHeader from './admin/PanelHeader';
@@ -449,6 +450,7 @@ export default function AdminDashboard({
       case 'cleanup':     return <DataCleanup students={students || []} setStudents={setStudents} alumni={alumni || []} setAlumni={setAlumni} companies={companies || []} setCompanies={setCompanies} messages={messages || []} posts={posts || []} setPosts={setPosts} jobs={jobs || []} setJobs={setJobs} />;
       case 'kariyer_gunleri': return <CMSCareerFair />;
       case 'platform_ayarlari': return <PlatformSettings featureSurveys={featureSurveys} setFeatureSurveys={setFeatureSurveys} featureCareerCheckup={featureCareerCheckup} setFeatureCareerCheckup={setFeatureCareerCheckup} featureAlumniCard={featureAlumniCard} setFeatureAlumniCard={setFeatureAlumniCard} featureClubsShowcase={featureClubsShowcase} setFeatureClubsShowcase={setFeatureClubsShowcase} featureClubApplications={featureClubApplications} setFeatureClubApplications={setFeatureClubApplications} featureCareerFair={featureCareerFair} setFeatureCareerFair={setFeatureCareerFair} featureSSPLeaderboard={featureSSPLeaderboard} setFeatureSSPLeaderboard={setFeatureSSPLeaderboard} sspEnabled={sspEnabled} setSspEnabled={setSspEnabled} />;
+      case 'cms_datapool': return <CMSDataPoolExport />;
 
       default:            return <OverviewPanel {...p}/>;
     }
@@ -456,6 +458,7 @@ export default function AdminDashboard({
 
   const MAIN_TABS = [
     { id: 'overview', icon: <LayoutDashboard size={14}/>, label: 'Genel Bakış' },
+    { id: 'cms_datapool', icon: <Database size={14}/>, label: '📊 Veri Havuzu & Excel' },
     { id: 'operasyon', icon: <Activity size={14}/>, label: 'Operasyon' },
     { id: 'akademik', icon: <BookOpen size={14}/>, label: 'Akademik' },
     { id: 'students', icon: <GraduationCap size={14}/>, label: 'Öğrenci' },
