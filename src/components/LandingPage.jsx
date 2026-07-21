@@ -279,7 +279,7 @@ export default function LandingPage({ setView }) {
 
 
             {/* Bento 5: Araştırma */}
-            <SpotlightCard spotlightColor="rgba(255,255,255,0.05)" className="col-span-1 row-span-1 md:col-start-4 md:row-start-2 p-6 md:p-8 flex flex-col justify-between !bg-[#051121] !border-none text-white cursor-pointer hover:-translate-y-1 transition-transform" onClick={() => setView('inner_page_arastirma')}>
+            <SpotlightCard spotlightColor="rgba(255,255,255,0.05)" className="col-span-1 row-span-1 md:col-start-4 md:row-start-2 p-6 md:p-8 flex flex-col justify-between !bg-[#051121] !border-none text-white cursor-pointer hover:-translate-y-1 transition-transform" onClick={() => setView('research_hub')}>
               <div>
                 <h3 className="text-lg font-black mb-2 tracking-tight text-white/90">Araştırma Faaliyetleri</h3>
                 <p className="text-gray-400 text-[12px] font-medium mb-6 leading-relaxed">Geleceğin meslek analizleri ve sektörel istihdam raporları.</p>
