@@ -210,16 +210,7 @@ export default function LandingPage({ setView }) {
 
       
       
-      {/* 2. FLOATING GLASS NAVIGATION DOCK */}
-      <section className="relative z-10 pb-12 flex justify-center w-full px-4">
-        <div className="bg-white/80 backdrop-blur-xl border border-gray-200/50 shadow-[0_8px_30px_rgb(0,0,0,0.06)] rounded-full px-2 py-2 flex items-center gap-2 overflow-x-auto hide-scrollbar max-w-full">
-          <button onClick={() => setView('inner_page_hakkimizda')} className="px-6 py-2.5 rounded-full text-[13px] font-black text-gray-700 hover:bg-[#0A2342] hover:text-white transition-all whitespace-nowrap">Hakkımızda</button>
-          <button onClick={() => setView('inner_page_hizmetlerimiz')} className="px-6 py-2.5 rounded-full text-[13px] font-black text-gray-700 hover:bg-[#0A2342] hover:text-white transition-all whitespace-nowrap">Hizmetlerimiz</button>
-          <a href="https://kurumsalform.gelisim.edu.tr/tr/kurumsalform-randevu-anasayfa" target="_blank" className="px-6 py-2.5 rounded-full text-[13px] font-black text-gray-700 hover:bg-[#0A2342] hover:text-white transition-all whitespace-nowrap">Randevu</a>
-          <a href="https://kariyer.gelisim.edu.tr/tr/idari-icerik-etkinliklerimiz" target="_blank" className="px-6 py-2.5 rounded-full text-[13px] font-black text-gray-700 hover:bg-[#0A2342] hover:text-white transition-all whitespace-nowrap">Etkinliklerimiz</a>
-          <a href="https://kariyer.gelisim.edu.tr/tr/idari-icerik-daima-yaninizdayiz" target="_blank" className="px-6 py-2.5 rounded-full text-[13px] font-black text-gray-700 hover:bg-[#0A2342] hover:text-white transition-all whitespace-nowrap">İletişim</a>
-        </div>
-      </section>
+
 
 
       {/* 3. BENTO BOX GRID: GELECEĞİN YETENEKLERİ (ULTRA PREMIUM CORPORATE) */}

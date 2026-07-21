@@ -234,7 +234,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const publicViews = ['landing', 'login', 'register', 'forgot_password', 'haberler', 'duyurular', 'etkinlikler'];
+    const publicViews = ['landing', 'login', 'register', 'forgot_password', 'haberler', 'duyurular', 'etkinlikler', 'about_us', 'services', 'events_list', 'contact_us', 'sksdb_lunch', 'sksdb_clubs', 'bidb_status', 'bidb_helpdesk', 'kariyer_board', 'metaverse_library', 'digital_portfolio', 'hackathon_market', 'campus_map', 'global_map'];
     const isInnerPage = view && view.startsWith('inner_page_');
     if (!currentUser && !publicViews.includes(view) && !isInnerPage) {
       if (window.toast) window.toast.error("Bu sayfayı görüntülemek için giriş yapmalısınız.");
