@@ -249,6 +249,36 @@ export default function TopProfileMenu({ currentUser, userRole, setView, setSele
                     >
                       <Building2 size={16} className="text-blue-500" /> İGÜ İdari Portal
                     </button>
+                    <div className="border-t border-slate-100 my-1 pt-1">
+                      <button 
+                        role="menuitem"
+                        onClick={() => { setIsOpen(false); setView?.('about_us'); }}
+                        className="w-full text-left px-4 py-2 text-[13px] font-bold text-slate-700 hover:text-indigo-600 hover:bg-slate-50 transition-colors flex items-center gap-3"
+                      >
+                        <Award size={16} className="text-indigo-500" /> Hakkımızda
+                      </button>
+                      <button 
+                        role="menuitem"
+                        onClick={() => { setIsOpen(false); setView?.('services'); }}
+                        className="w-full text-left px-4 py-2 text-[13px] font-bold text-slate-700 hover:text-indigo-600 hover:bg-slate-50 transition-colors flex items-center gap-3"
+                      >
+                        <BookOpen size={16} className="text-indigo-500" /> Hizmetlerimiz
+                      </button>
+                      <button 
+                        role="menuitem"
+                        onClick={() => { setIsOpen(false); setView?.('events_list'); }}
+                        className="w-full text-left px-4 py-2 text-[13px] font-bold text-slate-700 hover:text-indigo-600 hover:bg-slate-50 transition-colors flex items-center gap-3"
+                      >
+                        <Calendar size={16} className="text-indigo-500" /> Etkinliklerimiz
+                      </button>
+                      <button 
+                        role="menuitem"
+                        onClick={() => { setIsOpen(false); setView?.('contact_us'); }}
+                        className="w-full text-left px-4 py-2 text-[13px] font-bold text-slate-700 hover:text-indigo-600 hover:bg-slate-50 transition-colors flex items-center gap-3"
+                      >
+                        <Globe size={16} className="text-indigo-500" /> İletişim
+                      </button>
+                    </div>
                     <button 
                       role="menuitem"
                       onClick={() => { setIsOpen(false); setView?.('audit_logs'); }}

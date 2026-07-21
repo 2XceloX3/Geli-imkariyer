@@ -169,6 +169,14 @@ export default function LandingPage({ setView }) {
 
 
 
+          {/* Middle: Navigation Links */}
+          <div className="hidden lg:flex items-center gap-6 text-xs font-bold text-slate-700">
+            <button onClick={() => setView('about_us')} className="hover:text-gelisim-navy transition">Hakkımızda</button>
+            <button onClick={() => setView('services')} className="hover:text-gelisim-navy transition">Hizmetlerimiz</button>
+            <button onClick={() => setView('events_list')} className="hover:text-gelisim-navy transition">Etkinliklerimiz</button>
+            <button onClick={() => setView('contact_us')} className="hover:text-gelisim-navy transition">İletişim</button>
+          </div>
+
           {/* Right: Direct Login Button */}
           <button 
             onClick={() => setView('login')}

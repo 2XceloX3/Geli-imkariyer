@@ -74,6 +74,10 @@ const SKSDBClubsDirectory = lazy(() => import('./components/SKSDBClubsDirectory'
 const BIDBSystemStatusCard = lazy(() => import('./components/BIDBSystemStatusCard'));
 const BIDBHelpdeskModal = lazy(() => import('./components/BIDBHelpdeskModal'));
 const KariyerJobBoard = lazy(() => import('./components/KariyerJobBoard'));
+const AboutUsPage = lazy(() => import('./components/AboutUsPage'));
+const ServicesPage = lazy(() => import('./components/ServicesPage'));
+const EventsPage = lazy(() => import('./components/EventsPage'));
+const ContactPage = lazy(() => import('./components/ContactPage'));
 import GlobalSearchOverlay from './components/GlobalSearchOverlay';
 
 import { ToastContainer, toast } from './components/shared/Toast';
@@ -97,7 +101,7 @@ class ErrorBoundary extends React.Component {
 
 const RewardStore = lazy(() => import('./components/RewardStore'));
 
-const validViews = ['reward_store', 'student_analytics', 'landing', 'leaderboard', 'live_rooms', 'mentor_match', 'virtual_fair', 'alumni_card', 'career_test', 'career_roadmap', 'startup_incubator', 'login', 'register', 'forgot_password', 'create_job', 'club_admin', 'club_portal', 'student', 'alumni', 'academic', 'company', 'admin', 'organization', 'jobs', 'haberler', 'duyurular', 'etkinlikler', 'sem', 'staj', 'profile_update', 'mbs', 'user_profile', 'groups', 'group_profile', 'notifications', 'calendar', 'applications', 'cvbuilder', 'messaging', 'interview_sim', 'birlik_agi', 'idari_portal', 'audit_logs', 'wallet', 'mentor_booking', 'smart_certs', 'company_ats', 'digital_portfolio', 'metaverse_library', 'hackathon_market', 'alumni_dao', 'campus_map', 'anka_chat', 'global_map', 'sksdb_lunch', 'sksdb_clubs', 'bidb_status', 'bidb_helpdesk', 'kariyer_board'];
+const validViews = ['reward_store', 'student_analytics', 'landing', 'leaderboard', 'live_rooms', 'mentor_match', 'virtual_fair', 'alumni_card', 'career_test', 'career_roadmap', 'startup_incubator', 'login', 'register', 'forgot_password', 'create_job', 'club_admin', 'club_portal', 'student', 'alumni', 'academic', 'company', 'admin', 'organization', 'jobs', 'haberler', 'duyurular', 'etkinlikler', 'sem', 'staj', 'profile_update', 'mbs', 'user_profile', 'groups', 'group_profile', 'notifications', 'calendar', 'applications', 'cvbuilder', 'messaging', 'interview_sim', 'birlik_agi', 'idari_portal', 'audit_logs', 'wallet', 'mentor_booking', 'smart_certs', 'company_ats', 'digital_portfolio', 'metaverse_library', 'hackathon_market', 'alumni_dao', 'campus_map', 'anka_chat', 'global_map', 'sksdb_lunch', 'sksdb_clubs', 'bidb_status', 'bidb_helpdesk', 'kariyer_board', 'about_us', 'services', 'events_list', 'contact_us'];
 
 function App() {
   const viewState = useAppStore(state => state.viewState);
@@ -381,6 +385,10 @@ function App() {
         {view === 'bidb_status' && <BIDBSystemStatusCard currentUser={currentUser} userRole={userRole} setView={setView} setSelectedUserId={setSelectedUserId} />}
         {view === 'bidb_helpdesk' && <BIDBHelpdeskModal currentUser={currentUser} userRole={userRole} setView={setView} setSelectedUserId={setSelectedUserId} />}
         {view === 'kariyer_board' && <KariyerJobBoard currentUser={currentUser} userRole={userRole} setView={setView} setSelectedUserId={setSelectedUserId} />}
+        {view === 'about_us' && <AboutUsPage currentUser={currentUser} userRole={userRole} setView={setView} setSelectedUserId={setSelectedUserId} />}
+        {view === 'services' && <ServicesPage currentUser={currentUser} userRole={userRole} setView={setView} setSelectedUserId={setSelectedUserId} />}
+        {view === 'events_list' && <EventsPage currentUser={currentUser} userRole={userRole} setView={setView} setSelectedUserId={setSelectedUserId} />}
+        {view === 'contact_us' && <ContactPage currentUser={currentUser} userRole={userRole} setView={setView} setSelectedUserId={setSelectedUserId} />}
 
         {/* Gen Z UX Features */}
         <PWAInstallPrompt />
