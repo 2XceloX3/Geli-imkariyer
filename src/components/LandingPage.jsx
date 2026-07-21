@@ -190,28 +190,30 @@ export default function LandingPage({ setView }) {
       {/* Hero Slider */}
       <HeroSlider slides={heroSlides} currentSlide={currentSlide} />
 
-      
-      {/* 1. FLOATING ACTION CHIPS (NEON PILLS) */}
+      {/* 1. FLOATING ACTION CHIPS (NEON PILLS - NATIVE SPA VIEWS) */}
       <section className="relative z-10 pt-10 pb-4 max-w-5xl mx-auto px-4 flex justify-center flex-wrap gap-4">
-
-        <a href="https://igumer.gelisim.edu.tr/igumer-giris" target="_blank" rel="noopener noreferrer" className="group bg-white/80 backdrop-blur-md border border-white/50 shadow-xl shadow-sm rounded-full px-6 py-3 flex items-center gap-3 hover:-translate-y-1 transition-all duration-300">
+        <button 
+          onClick={() => setView('startup_incubator')} 
+          className="group bg-white/80 backdrop-blur-md border border-white/50 shadow-xl rounded-full px-6 py-3 flex items-center gap-3 hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+        >
           <div className="bg-indigo-100 p-1.5 rounded-full text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-colors"><Building size={18} /></div>
-          <span className="font-bold text-gray-800 text-[13px]">İGÜMER</span>
-        </a>
-        <a href="https://kariyerkapisi.cbiko.gov.tr/" target="_blank" rel="noopener noreferrer" className="group bg-white/80 backdrop-blur-md border border-white/50 shadow-xl shadow-sm rounded-full px-6 py-3 flex items-center gap-3 hover:-translate-y-1 transition-all duration-300">
+          <span className="font-bold text-gray-800 text-[13px]">İGÜMER Kuluçka & Girişimcilik</span>
+        </button>
+        <button 
+          onClick={() => setView('staj')} 
+          className="group bg-white/80 backdrop-blur-md border border-white/50 shadow-xl rounded-full px-6 py-3 flex items-center gap-3 hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+        >
           <div className="bg-emerald-100 p-1.5 rounded-full text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors"><Target size={18} /></div>
-          <span className="font-bold text-gray-800 text-[13px]">Yetenek Kapısı (CBİKO)</span>
-        </a>
-        <a href="https://kariyer.gelisim.edu.tr/tr/idari-icerik-ozgecmis-ve-onyazi-hazirlama" target="_blank" rel="noopener noreferrer" className="group bg-white/80 backdrop-blur-md border border-white/50 shadow-xl shadow-sm rounded-full px-6 py-3 flex items-center gap-3 hover:-translate-y-1 transition-all duration-300">
+          <span className="font-bold text-gray-800 text-[13px]">Yetenek & Staj Kapısı</span>
+        </button>
+        <button 
+          onClick={() => setView('cvbuilder')} 
+          className="group bg-white/80 backdrop-blur-md border border-white/50 shadow-xl rounded-full px-6 py-3 flex items-center gap-3 hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+        >
           <div className="bg-purple-100 p-1.5 rounded-full text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-colors"><FileText size={18} /></div>
-          <span className="font-bold text-gray-800 text-[13px]">Özgeçmiş Hazırlama</span>
-        </a>
+          <span className="font-bold text-gray-800 text-[13px]">AI Özgeçmiş & CV Oluşturucu</span>
+        </button>
       </section>
-
-      
-      
-
-
 
       {/* 3. BENTO BOX GRID: GELECEĞİN YETENEKLERİ (ULTRA PREMIUM CORPORATE) */}
       <section className="py-20 sm:py-28 bg-[#fdfdfd] relative overflow-hidden">
@@ -240,13 +242,13 @@ export default function LandingPage({ setView }) {
                   </div>
                   <h3 className="text-2xl md:text-3xl font-black text-white mb-2 tracking-tight">Ulusal Staj<br/>Programı</h3>
                   <p className="text-blue-100 text-sm font-medium mb-8 max-w-md leading-relaxed opacity-90">Cumhurbaşkanlığı İnsan Kaynakları Ofisi koordinasyonunda liyakat esaslı staj imkanı. Profesyonel hayata sağlam bir adım atın.</p>
-                  <button onClick={() => setView('inner_page_ulusal_staj')} className="bg-white text-[#0A2342] px-7 py-3 rounded-full font-bold text-[13px] w-max hover:bg-gray-50 transition-colors flex items-center gap-2 shadow-xl shadow-black/10 z-20 pointer-events-auto cursor-pointer relative">Detayları İncele <ArrowRight size={16}/></button>
+                  <button onClick={() => setView('staj')} className="bg-white text-[#0A2342] px-7 py-3 rounded-full font-bold text-[13px] w-max hover:bg-gray-50 transition-colors flex items-center gap-2 shadow-xl shadow-black/10 z-20 pointer-events-auto cursor-pointer relative">Detayları İncele <ArrowRight size={16}/></button>
                 </div>
               </div>
             </SpotlightCard>
 
             {/* Bento 2: Kariyer Gelişimim */}
-            <SpotlightCard spotlightColor="rgba(10,35,66,0.05)" className="col-span-1 row-span-1 md:col-start-3 md:row-start-1 p-6 md:p-8 flex flex-col !bg-white cursor-pointer hover:-translate-y-1 transition-transform" onClick={() => setView('inner_page_hizmetlerimiz')}>
+            <SpotlightCard spotlightColor="rgba(10,35,66,0.05)" className="col-span-1 row-span-1 md:col-start-3 md:row-start-1 p-6 md:p-8 flex flex-col !bg-white cursor-pointer hover:-translate-y-1 transition-transform" onClick={() => setView('services')}>
               <div className="w-12 h-12 bg-blue-50/80 rounded-xl flex items-center justify-center text-[#24548A] mb-5 border border-blue-100/50">
                 <TrendingUp size={24} />
               </div>
@@ -255,7 +257,7 @@ export default function LandingPage({ setView }) {
             </SpotlightCard>
 
             {/* Bento 3: Akran Mentor */}
-            <SpotlightCard spotlightColor="rgba(255,255,255,0.1)" className="col-span-1 row-span-1 md:col-start-4 md:row-start-1 p-6 md:p-8 flex flex-col !bg-gradient-to-br !from-[#1C4173] !to-[#11294D] !border-none cursor-pointer hover:-translate-y-1 transition-transform" onClick={() => setView('inner_page_akran_mentor')}>
+            <SpotlightCard spotlightColor="rgba(255,255,255,0.1)" className="col-span-1 row-span-1 md:col-start-4 md:row-start-1 p-6 md:p-8 flex flex-col !bg-gradient-to-br !from-[#1C4173] !to-[#11294D] !border-none cursor-pointer hover:-translate-y-1 transition-transform" onClick={() => setView('mentor_match')}>
               <div className="absolute -right-6 -bottom-6 opacity-[0.07] pointer-events-none"><Users size={160} /></div>
               <div className="relative z-10">
                 <div className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-xl flex items-center justify-center text-white mb-5 border border-white/20">
@@ -267,16 +269,13 @@ export default function LandingPage({ setView }) {
             </SpotlightCard>
 
             {/* Bento 4: İşbirliklerimiz */}
-            <SpotlightCard spotlightColor="rgba(10,35,66,0.05)" className="col-span-1 row-span-1 md:col-start-3 md:row-start-2 p-6 md:p-8 flex flex-col justify-center items-center text-center !bg-white cursor-pointer hover:-translate-y-1 transition-transform" onClick={() => setView('inner_page_isbirlikleri')}>
+            <SpotlightCard spotlightColor="rgba(10,35,66,0.05)" className="col-span-1 row-span-1 md:col-start-3 md:row-start-2 p-6 md:p-8 flex flex-col justify-center items-center text-center !bg-white cursor-pointer hover:-translate-y-1 transition-transform" onClick={() => setView('about_us')}>
               <div className="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center text-gray-700 mb-5 border border-gray-100">
                 <Handshake size={32} />
               </div>
               <h3 className="text-lg font-black text-gray-900 mb-1 tracking-tight">İşbirliklerimiz</h3>
               <p className="text-gray-500 text-[12px] font-medium leading-relaxed">Sektörün dev markalarıyla güçlü protokoller.</p>
             </SpotlightCard>
-
-            
-
 
             {/* Bento 5: Araştırma */}
             <SpotlightCard spotlightColor="rgba(255,255,255,0.05)" className="col-span-1 row-span-1 md:col-start-4 md:row-start-2 p-6 md:p-8 flex flex-col justify-between !bg-[#051121] !border-none text-white cursor-pointer hover:-translate-y-1 transition-transform" onClick={() => setView('research_hub')}>
@@ -293,8 +292,135 @@ export default function LandingPage({ setView }) {
         </div>
       </section>
 
-      
-      
+      {/* 3.5 İGÜ KURUMSAL HİZMETLER & HIZLI ERİŞİM HUB (NATIVE SPA) */}
+      <section className="py-16 bg-gradient-to-b from-[#fdfdfd] to-[#f8f9fc] border-y border-slate-200/60 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+            <div>
+              <span className="text-[11px] font-black uppercase tracking-widest text-[#24548A] bg-blue-50 px-3.5 py-1.5 rounded-full border border-blue-100">
+                Resmi İdari Hizmetler & Birimler
+              </span>
+              <h2 className="text-2xl md:text-3xl font-black text-[#0A2342] mt-3 tracking-tight">
+                İGÜ Kariyer & İdari Hizmetler Portalı
+              </h2>
+              <p className="text-slate-500 font-semibold text-xs md:text-sm mt-1">
+                Öğrenci, akademisyen ve mezunlarımızın tüm idari işlemleri için hızlı erişim panelleri.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {/* Card 1: Kariyer Danışmanlığı Randevu */}
+            <div 
+              onClick={() => setView('mentor_booking')}
+              className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer group flex flex-col justify-between"
+            >
+              <div>
+                <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                  <GraduationCap size={24} />
+                </div>
+                <h3 className="text-lg font-black text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">Kariyer & Özgeçmiş Danışmanlığı</h3>
+                <p className="text-xs font-semibold text-slate-500 leading-relaxed">Uzman kariyer danışmanlarımızdan 1-on-1 randevu alın, mülakat simülasyonlarına katılın.</p>
+              </div>
+              <div className="mt-6 flex items-center justify-between text-xs font-black text-indigo-600 border-t border-slate-100 pt-4">
+                <span>Randevu Al</span>
+                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+
+            {/* Card 2: SKSDB Vücut Kitle İndeksi & Diyetisyen */}
+            <div 
+              onClick={() => setView('sksdb_lunch')}
+              className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer group flex flex-col justify-between"
+            >
+              <div>
+                <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                  <Target size={24} />
+                </div>
+                <h3 className="text-lg font-black text-slate-900 mb-1 group-hover:text-emerald-600 transition-colors">SKSDB Öğrenci Sağlık & BMI</h3>
+                <p className="text-xs font-semibold text-slate-500 leading-relaxed">İdeal kilo aralığınızı hesaplayın, Mediko-Sosyal diyetisyeninden ücretsiz randevu alın.</p>
+              </div>
+              <div className="mt-6 flex items-center justify-between text-xs font-black text-emerald-600 border-t border-slate-100 pt-4">
+                <span>BMI İndeksini Ölç</span>
+                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+
+            {/* Card 3: BİDB Canlı Durum & Destek Biletleri */}
+            <div 
+              onClick={() => setView('bidb_status')}
+              className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer group flex flex-col justify-between"
+            >
+              <div>
+                <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mb-4 group-hover:bg-amber-600 group-hover:text-white transition-colors">
+                  <Zap size={24} />
+                </div>
+                <h3 className="text-lg font-black text-slate-900 mb-1 group-hover:text-amber-600 transition-colors">BİDB 10Gbps Sistem & Destek</h3>
+                <p className="text-xs font-semibold text-slate-500 leading-relaxed">Kampüs Wi-Fi, OBS ve LMS sunucu durumlarını izleyin, teknik destek bileti açın.</p>
+              </div>
+              <div className="mt-6 flex items-center justify-between text-xs font-black text-amber-600 border-t border-slate-100 pt-4">
+                <span>Sistem Durumunu Gör</span>
+                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+
+            {/* Card 4: Research OS & Ar-Ge Lab */}
+            <div 
+              onClick={() => setView('research_hub')}
+              className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer group flex flex-col justify-between"
+            >
+              <div>
+                <div className="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center mb-4 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                  <Search size={24} />
+                </div>
+                <h3 className="text-lg font-black text-slate-900 mb-1 group-hover:text-purple-600 transition-colors">Ar-Ge Lab & Makale İndeksi</h3>
+                <p className="text-xs font-semibold text-slate-500 leading-relaxed">110+ Ar-Ge laboratuvarından ekipman rezerve edin, YÖK/Scopus makalelerini inceleyin.</p>
+              </div>
+              <div className="mt-6 flex items-center justify-between text-xs font-black text-purple-600 border-t border-slate-100 pt-4">
+                <span>Research OS Merkezi</span>
+                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+
+            {/* Card 5: Vizyon, Misyon & Akreditasyonlar */}
+            <div 
+              onClick={() => setView('about_us')}
+              className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer group flex flex-col justify-between"
+            >
+              <div>
+                <div className="w-12 h-12 rounded-2xl bg-[#0A2342]/10 text-[#0A2342] flex items-center justify-center mb-4 group-hover:bg-[#0A2342] group-hover:text-white transition-colors">
+                  <Building size={24} />
+                </div>
+                <h3 className="text-lg font-black text-slate-900 mb-1 group-hover:text-[#0A2342] transition-colors">Vizyon, Yönerge & Kurumsal</h3>
+                <p className="text-xs font-semibold text-slate-500 leading-relaxed">İGÜ Kariyer Yönergesi, AQAS/AHPGS uluslararası akreditasyonlar ve 77.000+ mezun ağı.</p>
+              </div>
+              <div className="mt-6 flex items-center justify-between text-xs font-black text-[#0A2342] border-t border-slate-100 pt-4">
+                <span>Hakkımızda & Detaylar</span>
+                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+
+            {/* Card 6: Etkinlikler & Sertifikasyon */}
+            <div 
+              onClick={() => setView('events_list')}
+              className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer group flex flex-col justify-between"
+            >
+              <div>
+                <div className="w-12 h-12 rounded-2xl bg-cyan-50 text-cyan-600 flex items-center justify-center mb-4 group-hover:bg-cyan-600 group-hover:text-white transition-colors">
+                  <Calendar size={24} />
+                </div>
+                <h3 className="text-lg font-black text-slate-900 mb-1 group-hover:text-cyan-600 transition-colors">Kariyer Günleri & Bilet alma</h3>
+                <p className="text-xs font-semibold text-slate-500 leading-relaxed">Geleneksel Kariyer Günleri panellerine dijital katılım bileti oluşturun.</p>
+              </div>
+              <div className="mt-6 flex items-center justify-between text-xs font-black text-cyan-600 border-t border-slate-100 pt-4">
+                <span>Etkinlik Takvimini Aç</span>
+                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* 4. PREMIUM BENTO MASONRY NEWS/EVENTS GRID */}
       <section className="py-20 sm:py-28 bg-[#f8f9fc] relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
