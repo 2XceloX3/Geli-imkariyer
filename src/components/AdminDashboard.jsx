@@ -291,15 +291,16 @@ function AkademikPanel({ students = [] }) {
 //  SIDEBAR NAVIGATION CONFIG
 // ══════════════════════════════════════════════════════════════
 const PANEL_CATEGORIES = [
-  { id: 'genel', label: 'Genel Bakış', icon: <LayoutDashboard size={14}/>, panels: ['overview', 'operasyon', 'akademik'] },
+  { id: 'genel', label: 'Genel Bakış', icon: <LayoutDashboard size={14}/>, panels: ['overview', 'cms_datapool', 'operasyon', 'akademik'] },
   { id: 'kullanici', label: 'Kullanıcı Yönetimi', icon: <Users size={14}/>, panels: ['students', 'alumni', 'companies', 'academic_staff', 'mezun_dernek', 'sem', 'cms_groups'] },
   { id: 'birlik', label: 'Birlik Paneli', icon: <ShieldCheck size={14}/>, panels: ['clubs_pool', 'cms_ssp', 'cms_live_rooms'] },
   { id: 'icerik', label: 'İçerik & Platform', icon: <FileText size={14}/>, panels: ['cms_news', 'cms_ann', 'cms_events', 'cms_jobs', 'cms_feat', 'cms_ment', 'kariyer_gunleri'] },
-  { id: 'sistem', label: 'Sistem & Analiz', icon: <Settings size={14}/>, panels: ['cleanup', 'content_import', 'analytics', 'anket', 'kart', 'platform_ayarlari'] }
+  { id: 'sistem', label: 'Sistem & Analiz', icon: <Settings size={14}/>, panels: ['cms_datapool', 'cleanup', 'content_import', 'analytics', 'anket', 'kart', 'platform_ayarlari'] }
 ];
 
 const MAIN_TABS = [
   { id:'overview',   label:'Kontrol Merkezi',    icon:<LayoutDashboard size={17}/> },
+  { id:'cms_datapool', label:'📊 Veri Havuzu & Excel', icon:<Database size={17}/> },
   { id:'operasyon',  label:'Operasyon Özeti',    icon:<Activity size={17}/> },
   { id:'akademik',   label:'Akademik Performans',icon:<TrendingUp size={17}/> },
   { id:'academic_catalog', label:'Akademik Katalog', icon:<Library size={17}/> },
@@ -402,7 +403,7 @@ export default function AdminDashboard({
   const sspUsers = useAppStore(state => state.sspUsers);
   const liveRooms = useAppStore(state => state.liveRooms);
   const setSspUsers = useAppStore(state => state.setSspUsers);
-    const [activeTab, setActiveTab]       = useState('overview');
+  const [activeTab, setActiveTab]       = useState('overview');
   const [activeCategory, setActiveCategory] = useState('genel');
   const [searchQuery, setSearchQuery] = useState('');
   const [alumniCards]                    = useState(ALUMNI_CARDS);
@@ -427,6 +428,7 @@ export default function AdminDashboard({
       case 'clubs_pool':  return <CMSClubs clubs={clubs} setClubs={setClubs} clubApplications={clubApplications} setClubApplications={setClubApplications} currentUser={currentUser} />;
       case 'cms_ssp':     return <CMSSSP sspEnabled={sspEnabled} setSspEnabled={setSspEnabled} sspUsers={sspUsers} setSspUsers={setSspUsers} />;
       case 'cms_live_rooms': return <CMSLiveRooms currentUser={currentUser} userRole={userRole} liveRooms={liveRooms} />;
+      case 'cms_datapool': return <CMSDataPoolExport />;
       case 'overview':    return <OverviewPanel {...p}/>;
       case 'operasyon':   return <OperasyonPanel {...p}/>;
       case 'akademik':    return <AkademikPanel {...p}/>;
