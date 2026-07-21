@@ -460,7 +460,7 @@ export default function AdminDashboard({
 
   const MAIN_TABS = [
     { id: 'overview', icon: <LayoutDashboard size={14}/>, label: 'Genel Bakış' },
-    { id: 'cms_datapool', icon: <Database size={14}/>, label: '📊 Veri Havuzu & Excel' },
+    { id: 'cms_datapool', icon: <Database size={14}/>, label: 'Veri Havuzu & Excel' },
     { id: 'operasyon', icon: <Activity size={14}/>, label: 'Operasyon' },
     { id: 'akademik', icon: <BookOpen size={14}/>, label: 'Akademik' },
     { id: 'students', icon: <GraduationCap size={14}/>, label: 'Öğrenci' },
