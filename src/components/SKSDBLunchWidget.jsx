@@ -1,23 +1,40 @@
 import React, { useState } from 'react';
-import { Utensils, Flame, ThumbsUp, Star, ChevronLeft, Calendar, Activity, Heart, Droplets, Dumbbell, Scale, Sparkles, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Activity, Flame, ChevronLeft, Droplets, Dumbbell, Scale, Sparkles, AlertCircle, CheckCircle2, HeartPulse, CalendarCheck, ArrowUpRight, Award, UserCheck } from 'lucide-react';
 import TopProfileMenu from './TopProfileMenu';
-import unitsData from '../data/knowledge_base/units_services.json';
 
 export default function SKSDBLunchWidget({ setView, currentUser, userRole, setSelectedUserId }) {
-  const menu = unitsData.sksdb.lunchMenu;
-  const [likes, setLikes] = useState(142);
-  const [hasVoted, setHasVoted] = useState(false);
-
   // BMI & Health Calculator State
   const [height, setHeight] = useState(175);
   const [weight, setWeight] = useState(70);
   const [age, setAge] = useState(21);
   const [gender, setGender] = useState('male');
   const [activity, setActivity] = useState(1.375); // Light activity
+  const [dietitianBooked, setDietitianBooked] = useState(false);
 
   // BMI Calculation
   const heightM = height / 100;
-  const bmi = (weight / (heightM * heightM)).toFixed(1);
+  const bmiVal = (weight / (heightM * heightM));
+  const bmi = bmiVal.toFixed(1);
+
+  // Ideal Weight Range (BMI 18.5 - 24.9)
+  const minIdeal = (18.5 * heightM * heightM).toFixed(1);
+  const maxIdeal = (24.9 * heightM * heightM).toFixed(1);
+
+  // Weight Target Delta
+  let weightDeltaText = '';
+  let weightDeltaColor = '';
+  if (weight > maxIdeal) {
+    const diff = (weight - maxIdeal).toFixed(1);
+    weightDeltaText = `İdeal kilonuzun ${diff} kg üzerindesiniz`;
+    weightDeltaColor = 'text-amber-400';
+  } else if (weight < minIdeal) {
+    const diff = (minIdeal - weight).toFixed(1);
+    weightDeltaText = `İdeal kilonuzun ${diff} kg altındasınız`;
+    weightDeltaColor = 'text-indigo-400';
+  } else {
+    weightDeltaText = 'Mükemmel! İdeal kilo aralığındasınız';
+    weightDeltaColor = 'text-emerald-400';
+  }
 
   // BMR Calculation (Mifflin-St Jeor)
   const bmr = gender === 'male' 
@@ -29,19 +46,18 @@ export default function SKSDBLunchWidget({ setView, currentUser, userRole, setSe
   const idealProtein = Math.round(weight * 1.4);
 
   const getBmiCategory = (val) => {
-    if (val < 18.5) return { label: 'Zayıf', color: 'text-indigo-600 bg-indigo-50 border-indigo-200', desc: 'İdeal kilonuzun altındasınız. Kalori ve protein alımınızı artırabilirsiniz.' };
-    if (val <= 24.9) return { label: 'İdeal / Sağlıklı Kilo', color: 'text-emerald-600 bg-emerald-50 border-emerald-200', desc: 'Harika! Vücut kitle indeksiniz mükemmel bir dengede.' };
-    if (val <= 29.9) return { label: 'Fazla Kilolu', color: 'text-amber-600 bg-amber-50 border-amber-200', desc: 'İdeal kilonuzun hafif üzerindesiniz. Günlük yürüyüş ve kardiyo önerilir.' };
-    return { label: 'Yüksek Kilo (Obez)', color: 'text-rose-600 bg-rose-50 border-rose-200', desc: 'Sağlıklı yaşam için Mediko-Sosyal beslenme uzmanımıza danışabilirsiniz.' };
+    if (val < 18.5) return { label: 'Zayıf', color: 'text-indigo-600 bg-indigo-50 border-indigo-200', desc: 'İdeal kilonuzun altındasınız. Sağlıklı kilo alımı için beslenme uzmanımızla görüşebilirsiniz.' };
+    if (val <= 24.9) return { label: 'İdeal / Sağlıklı Kilo', color: 'text-emerald-600 bg-emerald-50 border-emerald-200', desc: 'Tebrikler! Vücut kitle indeksiniz dengede. Formunuzu koruyun.' };
+    if (val <= 29.9) return { label: 'Fazla Kilolu', color: 'text-amber-600 bg-amber-50 border-amber-200', desc: 'İdeal kilonuzun hafif üzerindesiniz. Düzenli yürüyüş ve dengeli beslenme önerilir.' };
+    return { label: 'Yüksek Kilo (Obez)', color: 'text-rose-600 bg-rose-50 border-rose-200', desc: 'Sağlıklı yaşam ve beslenme programı için Mediko-Sosyal Diyetisyenimizden randevu alabilirsiniz.' };
   };
 
   const bmiStatus = getBmiCategory(parseFloat(bmi));
 
-  const handleVote = () => {
-    if (!hasVoted) {
-      setLikes(prev => prev + 1);
-      setHasVoted(true);
-      window.toast && window.toast.success("Günün menüsünü beğendiniz! Teşekkürler.");
+  const handleBookDietitian = () => {
+    if (!dietitianBooked) {
+      setDietitianBooked(true);
+      window.toast && window.toast.success("Mediko-Sosyal Diyetisyen randevu talebiniz alındı. Öğrenci E-postanıza onay iletildi.");
     }
   };
 
@@ -69,13 +85,13 @@ export default function SKSDBLunchWidget({ setView, currentUser, userRole, setSe
         <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950 text-white rounded-3xl p-8 md:p-10 shadow-xl border border-slate-800 relative overflow-hidden">
           <div className="max-w-2xl">
             <span className="text-[10px] font-black uppercase tracking-widest text-emerald-400 bg-emerald-950/60 px-3.5 py-1.5 rounded-full border border-emerald-900/40">
-              SKSDB Mediko-Sosyal & İdeal Yaşam
+              SKSDB Mediko-Sosyal Sağlık Rehberi
             </span>
             <h2 className="text-2xl md:text-3xl font-black mt-3 mb-3 tracking-tight">
-              Öğrenci Vücut Kitle İndeksi (BMI) & Metabolizma Danışmanı
+              Öğrenci Vücut Kitle İndeksi (BMI) & İdeal Kilo Analizi
             </h2>
             <p className="text-slate-300 text-xs md:text-sm font-semibold leading-relaxed">
-              Fiziksel ölçümlerinizi girin, anlık metabolizma hızınızı, ideal günlük kalori hedefinizi ve yemekhane menüsü uyumunuzu objektif verilerle takip edin.
+              Boy ve kilonuzu girin, vücut kitle indeksinizi, ideal kilo aralığınızı, günlük metabolizma kalori ihtiyacınızı ve Mediko-Sosyal sağlık tavsiyelerini objektif verilerle görüntüleyin.
             </p>
           </div>
         </div>
@@ -87,9 +103,9 @@ export default function SKSDBLunchWidget({ setView, currentUser, userRole, setSe
           <div className="lg:col-span-5 bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm flex flex-col gap-6">
             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
               <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
-                <Scale className="text-indigo-600" size={20} /> Vücut Ölçüm Formu
+                <Scale className="text-indigo-600" size={20} /> Ölçüm Formu
               </h3>
-              <span className="text-[10px] font-black uppercase text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-md">Anlık Hesaplama</span>
+              <span className="text-[10px] font-black uppercase text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-md">Anlık Analiz</span>
             </div>
 
             {/* Gender Toggle */}
@@ -173,7 +189,7 @@ export default function SKSDBLunchWidget({ setView, currentUser, userRole, setSe
             </div>
           </div>
 
-          {/* Right: Results & Health Metrics (7 cols) */}
+          {/* Right: Results & Ideal Weight Goal Panel (7 cols) */}
           <div className="lg:col-span-7 flex flex-col gap-6">
             
             {/* BMI Score Card */}
@@ -214,32 +230,39 @@ export default function SKSDBLunchWidget({ setView, currentUser, userRole, setSe
               </div>
             </div>
 
-            {/* Daily Cafeteria Menu Match */}
+            {/* Ideal Weight Goal & Mediko-Sosyal Dietitian Appointment Panel (Replaced Cafeteria Menu Box) */}
             <div className="bg-slate-950 text-white p-6 md:p-8 rounded-3xl border border-slate-800 shadow-xl flex flex-col justify-between">
               <div>
                 <div className="flex justify-between items-start mb-4">
                   <div>
-                    <span className="text-[10px] font-black uppercase text-indigo-400 bg-indigo-950/60 px-3 py-1 rounded-full border border-indigo-900/40">Günün Yemekhane Menüsü Entegrasyonu</span>
-                    <h4 className="text-xl font-black mt-2 text-slate-100">{menu.mainCourse} & {menu.sideCourse}</h4>
+                    <span className="text-[10px] font-black uppercase text-emerald-400 bg-emerald-950/70 px-3 py-1 rounded-full border border-emerald-900/50">İdeal Kilo & Hedef Analizi</span>
+                    <h4 className="text-xl font-black mt-2 text-slate-100 flex items-center gap-2">
+                      <Award size={20} className="text-amber-400" /> İdeal Kilo Aralığınız: {minIdeal} - {maxIdeal} kg
+                    </h4>
                   </div>
-                  <span className="text-xs font-black text-emerald-400 bg-emerald-950/80 px-3 py-1 rounded-xl border border-emerald-800">{menu.price}</span>
+                  <span className={`text-xs font-black px-3 py-1.5 rounded-xl border border-slate-800 bg-slate-900 ${weightDeltaColor}`}>
+                    {weightDeltaText}
+                  </span>
                 </div>
 
-                <div className="flex items-center gap-4 border-t border-slate-800 pt-4 mb-4">
-                  <div className="text-amber-400 font-black text-sm flex items-center gap-1.5">
-                    <Flame size={18} /> {menu.calories} kcal
+                <div className="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-2 mb-6">
+                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
+                    <HeartPulse className="text-emerald-400 shrink-0" size={16} /> 
+                    <span>SKSDB Mediko-Sosyal birimi öğrencilerimize ücretsiz beslenme danışmanlığı sağlamaktadır.</span>
                   </div>
-                  <div className="text-slate-400 text-xs font-semibold">
-                    Günlük İhtiyacınızın <span className="text-emerald-400 font-bold">%{Math.round((menu.calories / dailyCalories) * 100)}</span> kadarı.
+                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-400">
+                    <UserCheck className="text-indigo-400 shrink-0" size={16} /> 
+                    <span>Uzman diyetisyenlerimizle birebir yüz yüze görüşmek için randevu talebi oluşturun.</span>
                   </div>
                 </div>
               </div>
 
               <button 
-                onClick={handleVote}
-                className={`w-full py-3 rounded-2xl font-black text-xs uppercase tracking-widest transition flex items-center justify-center gap-2 ${hasVoted ? 'bg-emerald-600 text-white' : 'bg-indigo-600 hover:bg-indigo-700 text-white'}`}
+                onClick={handleBookDietitian}
+                className={`w-full py-3.5 rounded-2xl font-black text-xs uppercase tracking-widest transition flex items-center justify-center gap-2 shadow-lg ${dietitianBooked ? 'bg-emerald-600 text-white' : 'bg-emerald-500 hover:bg-emerald-600 text-slate-950'}`}
               >
-                <ThumbsUp size={16} /> {hasVoted ? 'Menü Beğenildi' : 'Günün Menüsünü Beğen'} ({likes})
+                {dietitianBooked ? <CheckCircle2 size={16} /> : <CalendarCheck size={16} />}
+                {dietitianBooked ? 'Diyetisyen Randevunuz Alındı' : 'Ücretsiz Mediko-Sosyal Diyetisyen Randevusu Al'}
               </button>
             </div>
 
