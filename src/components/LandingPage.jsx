@@ -551,7 +551,7 @@ export default function LandingPage({ setView }) {
 
       {/* Footer */}
 
-      <Footer />
+      <Footer setSelectedItem={setSelectedItem} legalData={legalData} setView={setView} />
 
       {/* News/Event Detail Modal */}
       {selectedItem && (
