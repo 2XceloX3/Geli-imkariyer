@@ -66,6 +66,19 @@ export default function TopProfileMenu({ currentUser, userRole, setView, setSele
 
   const isClubAdmin = managedClubs?.length > 0;
 
+  if (!currentUser) {
+    return (
+      <div className="flex items-center gap-2">
+        <button 
+          onClick={() => setView?.('login')}
+          className="flex items-center gap-2 bg-[#0A2342] hover:bg-[#163B65] text-white px-4 py-2 rounded-xl text-xs font-black transition-all shadow-md hover:shadow-lg"
+        >
+          <User size={14} /> Giriş Yap
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="flex items-center gap-3">
       <div className="relative" ref={menuRef}>
