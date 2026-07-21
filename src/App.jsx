@@ -68,6 +68,14 @@ const CampusMap = lazy(() => import('./components/CampusMap'));
 const AnkaChat = lazy(() => import('./components/AnkaChat'));
 const GlobalAlumniMap = lazy(() => import('./components/GlobalAlumniMap'));
 
+// Stitch UI Components
+const SKSDBLunchWidget = lazy(() => import('./components/SKSDBLunchWidget'));
+const SKSDBClubsDirectory = lazy(() => import('./components/SKSDBClubsDirectory'));
+const BIDBSystemStatusCard = lazy(() => import('./components/BIDBSystemStatusCard'));
+const BIDBHelpdeskModal = lazy(() => import('./components/BIDBHelpdeskModal'));
+const KariyerJobBoard = lazy(() => import('./components/KariyerJobBoard'));
+import GlobalSearchOverlay from './components/GlobalSearchOverlay';
+
 import { ToastContainer, toast } from './components/shared/Toast';
 import NotificationEngine from './components/NotificationEngine';
 
@@ -89,7 +97,7 @@ class ErrorBoundary extends React.Component {
 
 const RewardStore = lazy(() => import('./components/RewardStore'));
 
-const validViews = ['reward_store', 'student_analytics', 'landing', 'leaderboard', 'live_rooms', 'mentor_match', 'virtual_fair', 'alumni_card', 'career_test', 'career_roadmap', 'startup_incubator', 'login', 'register', 'forgot_password', 'create_job', 'club_admin', 'club_portal', 'student', 'alumni', 'academic', 'company', 'admin', 'organization', 'jobs', 'haberler', 'duyurular', 'etkinlikler', 'sem', 'staj', 'profile_update', 'mbs', 'user_profile', 'groups', 'group_profile', 'notifications', 'calendar', 'applications', 'cvbuilder', 'messaging', 'interview_sim', 'birlik_agi', 'idari_portal', 'audit_logs', 'wallet', 'mentor_booking', 'smart_certs', 'company_ats', 'digital_portfolio', 'metaverse_library', 'hackathon_market', 'alumni_dao', 'campus_map', 'anka_chat', 'global_map'];
+const validViews = ['reward_store', 'student_analytics', 'landing', 'leaderboard', 'live_rooms', 'mentor_match', 'virtual_fair', 'alumni_card', 'career_test', 'career_roadmap', 'startup_incubator', 'login', 'register', 'forgot_password', 'create_job', 'club_admin', 'club_portal', 'student', 'alumni', 'academic', 'company', 'admin', 'organization', 'jobs', 'haberler', 'duyurular', 'etkinlikler', 'sem', 'staj', 'profile_update', 'mbs', 'user_profile', 'groups', 'group_profile', 'notifications', 'calendar', 'applications', 'cvbuilder', 'messaging', 'interview_sim', 'birlik_agi', 'idari_portal', 'audit_logs', 'wallet', 'mentor_booking', 'smart_certs', 'company_ats', 'digital_portfolio', 'metaverse_library', 'hackathon_market', 'alumni_dao', 'campus_map', 'anka_chat', 'global_map', 'sksdb_lunch', 'sksdb_clubs', 'bidb_status', 'bidb_helpdesk', 'kariyer_board'];
 
 function App() {
   const viewState = useAppStore(state => state.viewState);
@@ -175,6 +183,18 @@ function App() {
   }, [currentUser]);
 
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  useEffect(() => {
+    const handleGlobalK = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsSearchOpen(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleGlobalK);
+    return () => window.removeEventListener('keydown', handleGlobalK);
+  }, []);
 
   // Firebase Real User Hydration
   useEffect(() => {
@@ -355,11 +375,17 @@ function App() {
         {view === 'alumni_dao' && <AlumniDAO currentUser={currentUser} userRole={userRole} setView={setView} setSelectedUserId={setSelectedUserId} />}
         {view === 'campus_map' && <CampusMap currentUser={currentUser} userRole={userRole} setView={setView} setSelectedUserId={setSelectedUserId} />}
         {view === 'anka_chat' && <AnkaChat currentUser={currentUser} userRole={userRole} setView={setView} setSelectedUserId={setSelectedUserId} />}
-        {view === 'global_map' && <GlobalAlumniMap currentUser={currentUser} userRole={userRole} setView={setView} setSelectedUserId={setSelectedUserId} />}
-        
+        {/* Stitch UI View Pages */}
+        {view === 'sksdb_lunch' && <SKSDBLunchWidget currentUser={currentUser} userRole={userRole} setView={setView} setSelectedUserId={setSelectedUserId} />}
+        {view === 'sksdb_clubs' && <SKSDBClubsDirectory currentUser={currentUser} userRole={userRole} setView={setView} setSelectedUserId={setSelectedUserId} />}
+        {view === 'bidb_status' && <BIDBSystemStatusCard currentUser={currentUser} userRole={userRole} setView={setView} setSelectedUserId={setSelectedUserId} />}
+        {view === 'bidb_helpdesk' && <BIDBHelpdeskModal currentUser={currentUser} userRole={userRole} setView={setView} setSelectedUserId={setSelectedUserId} />}
+        {view === 'kariyer_board' && <KariyerJobBoard currentUser={currentUser} userRole={userRole} setView={setView} setSelectedUserId={setSelectedUserId} />}
+
         {/* Gen Z UX Features */}
         <PWAInstallPrompt />
         <CommandPalette setView={setView} />
+        <GlobalSearchOverlay isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} setView={setView} />
       </Suspense>
     </ErrorBoundary>
   );
