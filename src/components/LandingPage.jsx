@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, ArrowRight, Mail, MapPin, Download, FileText, ExternalLink, X, LogIn, Briefcase, Search, Users, Handshake, TrendingUp, Target, Sparkles, Zap, GraduationCap, Building, ChevronRight } from 'lucide-react';
+import { Calendar, ArrowRight, Mail, MapPin, Download, FileText, ExternalLink, X, LogIn, Briefcase, Search, Users, Handshake, TrendingUp, Target, Sparkles, Zap, GraduationCap, Building, ChevronRight, ShieldCheck } from 'lucide-react';
 import * as Icons from 'lucide-react';
 import useAppStore from '../store/useAppStore';
 import { liveSliderData } from '../utils/liveData';
