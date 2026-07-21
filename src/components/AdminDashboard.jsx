@@ -300,7 +300,7 @@ const PANEL_CATEGORIES = [
 
 const MAIN_TABS = [
   { id:'overview',   label:'Kontrol Merkezi',    icon:<LayoutDashboard size={17}/> },
-  { id:'cms_datapool', label:'📊 Veri Havuzu & Excel', icon:<Database size={17}/> },
+  { id:'cms_datapool', label:'Veri Havuzu & Excel', icon:<Database size={17}/> },
   { id:'operasyon',  label:'Operasyon Özeti',    icon:<Activity size={17}/> },
   { id:'akademik',   label:'Akademik Performans',icon:<TrendingUp size={17}/> },
   { id:'academic_catalog', label:'Akademik Katalog', icon:<Library size={17}/> },
