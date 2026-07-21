@@ -180,10 +180,13 @@ function App() {
     }
   }, [currentUser, setCurrentUser]);
 
-  // Handle PWA installation
+  // Handle PWA installation & user persistence
   useEffect(() => {
     if (currentUser) {
       localStorage.setItem('igu_mock_user', JSON.stringify(currentUser));
+    } else {
+      localStorage.removeItem('igu_mock_user');
+      localStorage.removeItem('igu_user_role_v1');
     }
   }, [currentUser]);
 
