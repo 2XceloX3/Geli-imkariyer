@@ -279,6 +279,13 @@ export default function TopProfileMenu({ currentUser, userRole, setView, setSele
                       </button>
                       <button 
                         role="menuitem"
+                        onClick={() => { setIsOpen(false); setView?.('research_hub'); }}
+                        className="w-full text-left px-4 py-2 text-[13px] font-bold text-slate-700 hover:text-indigo-600 hover:bg-slate-50 transition-colors flex items-center gap-3"
+                      >
+                        <Atom size={16} className="text-indigo-500" /> Araştırma & Ar-Ge OS
+                      </button>
+                      <button 
+                        role="menuitem"
                         onClick={() => { setIsOpen(false); setView?.('events_list'); }}
                         className="w-full text-left px-4 py-2 text-[13px] font-bold text-slate-700 hover:text-indigo-600 hover:bg-slate-50 transition-colors flex items-center gap-3"
                       >

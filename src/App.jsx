@@ -78,6 +78,7 @@ const AboutUsPage = lazy(() => import('./components/AboutUsPage'));
 const ServicesPage = lazy(() => import('./components/ServicesPage'));
 const EventsPage = lazy(() => import('./components/EventsPage'));
 const ContactPage = lazy(() => import('./components/ContactPage'));
+const ResearchOSHub = lazy(() => import('./components/ResearchOSHub'));
 import GlobalSearchOverlay from './components/GlobalSearchOverlay';
 
 import { ToastContainer, toast } from './components/shared/Toast';
@@ -101,7 +102,7 @@ class ErrorBoundary extends React.Component {
 
 const RewardStore = lazy(() => import('./components/RewardStore'));
 
-const validViews = ['reward_store', 'student_analytics', 'landing', 'leaderboard', 'live_rooms', 'mentor_match', 'virtual_fair', 'alumni_card', 'career_test', 'career_roadmap', 'startup_incubator', 'login', 'register', 'forgot_password', 'create_job', 'club_admin', 'club_portal', 'student', 'alumni', 'academic', 'company', 'admin', 'organization', 'jobs', 'haberler', 'duyurular', 'etkinlikler', 'sem', 'staj', 'profile_update', 'mbs', 'user_profile', 'groups', 'group_profile', 'notifications', 'calendar', 'applications', 'cvbuilder', 'messaging', 'interview_sim', 'birlik_agi', 'idari_portal', 'audit_logs', 'wallet', 'mentor_booking', 'smart_certs', 'company_ats', 'digital_portfolio', 'metaverse_library', 'hackathon_market', 'alumni_dao', 'campus_map', 'anka_chat', 'global_map', 'sksdb_lunch', 'sksdb_clubs', 'bidb_status', 'bidb_helpdesk', 'kariyer_board', 'about_us', 'services', 'events_list', 'contact_us'];
+const validViews = ['reward_store', 'student_analytics', 'landing', 'leaderboard', 'live_rooms', 'mentor_match', 'virtual_fair', 'alumni_card', 'career_test', 'career_roadmap', 'startup_incubator', 'login', 'register', 'forgot_password', 'create_job', 'club_admin', 'club_portal', 'student', 'alumni', 'academic', 'company', 'admin', 'organization', 'jobs', 'haberler', 'duyurular', 'etkinlikler', 'sem', 'staj', 'profile_update', 'mbs', 'user_profile', 'groups', 'group_profile', 'notifications', 'calendar', 'applications', 'cvbuilder', 'messaging', 'interview_sim', 'birlik_agi', 'idari_portal', 'audit_logs', 'wallet', 'mentor_booking', 'smart_certs', 'company_ats', 'digital_portfolio', 'metaverse_library', 'hackathon_market', 'alumni_dao', 'campus_map', 'anka_chat', 'global_map', 'sksdb_lunch', 'sksdb_clubs', 'bidb_status', 'bidb_helpdesk', 'kariyer_board', 'about_us', 'services', 'events_list', 'contact_us', 'research_hub'];
 
 function App() {
   const viewState = useAppStore(state => state.viewState);
@@ -234,7 +235,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const publicViews = ['landing', 'login', 'register', 'forgot_password', 'haberler', 'duyurular', 'etkinlikler', 'about_us', 'services', 'events_list', 'contact_us', 'sksdb_lunch', 'sksdb_clubs', 'bidb_status', 'bidb_helpdesk', 'kariyer_board', 'metaverse_library', 'digital_portfolio', 'hackathon_market', 'campus_map', 'global_map'];
+    const publicViews = ['landing', 'login', 'register', 'forgot_password', 'haberler', 'duyurular', 'etkinlikler', 'about_us', 'services', 'events_list', 'contact_us', 'sksdb_lunch', 'sksdb_clubs', 'bidb_status', 'bidb_helpdesk', 'kariyer_board', 'metaverse_library', 'digital_portfolio', 'hackathon_market', 'campus_map', 'global_map', 'research_hub'];
     const isInnerPage = view && view.startsWith('inner_page_');
     if (!currentUser && !publicViews.includes(view) && !isInnerPage) {
       if (window.toast) window.toast.error("Bu sayfayı görüntülemek için giriş yapmalısınız.");
@@ -389,6 +390,7 @@ function App() {
         {view === 'services' && <ServicesPage currentUser={currentUser} userRole={userRole} setView={setView} setSelectedUserId={setSelectedUserId} />}
         {view === 'events_list' && <EventsPage currentUser={currentUser} userRole={userRole} setView={setView} setSelectedUserId={setSelectedUserId} />}
         {view === 'contact_us' && <ContactPage currentUser={currentUser} userRole={userRole} setView={setView} setSelectedUserId={setSelectedUserId} />}
+        {view === 'research_hub' && <ResearchOSHub currentUser={currentUser} userRole={userRole} setView={setView} setSelectedUserId={setSelectedUserId} />}
 
         {/* Gen Z UX Features */}
         <PWAInstallPrompt />
